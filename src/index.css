@@ -23,6 +23,15 @@
   }
 }
 
+@layer utilities {
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top, 0px), 12px);
+  }
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+  }
+}
+
 /* Custom Futuristic Scrollbar */
 ::-webkit-scrollbar {
   width: 4px;

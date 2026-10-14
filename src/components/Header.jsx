@@ -53,7 +53,7 @@ export function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-cyan-500/15 px-4 py-3 safe-top">
+    <header className="sticky top-0 z-40 w-full bg-space-950/85 backdrop-blur-xl border-b border-cyan-500/20 px-4 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-3 shadow-lg">
       <div className="max-w-2xl mx-auto flex items-center justify-between">
         
         {/* Brand / Logo */}

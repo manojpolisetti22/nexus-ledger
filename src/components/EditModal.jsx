@@ -71,7 +71,7 @@ export function EditModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-space-950/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-[calc(env(safe-area-inset-bottom,0px))] bg-space-950/80 backdrop-blur-md animate-in fade-in duration-200">
       
       {/* Modal / Bottom Drawer Container */}
       <div 
