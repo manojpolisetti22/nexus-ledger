@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Settings, 
@@ -44,6 +44,14 @@ export function SettingsModal({
   const [testStatus, setTestStatus] = useState('');
   const [isTesting, setIsTesting] = useState(false);
 
+  useEffect(() => {
+    let aiModel = settings.aiModel;
+    if (!aiModel || aiModel.includes('2.5')) {
+      aiModel = 'gemini-1.5-flash';
+    }
+    setFormData(prev => ({ ...prev, ...settings, aiModel }));
+  }, [isOpen, settings]);
+
   if (!isOpen) return null;
 
   const handleChange = (field, value) => {
@@ -53,22 +61,53 @@ export function SettingsModal({
   };
 
   const handleTestKey = async () => {
-    if (!formData.apiKey) {
+    const rawKey = (formData.apiKey || '').trim();
+    if (!rawKey) {
       setTestStatus('Please enter an API key first.');
       return;
     }
     setIsTesting(true);
-    setTestStatus('Validating Gemini connection...');
-
-    let chosenModel = formData.aiModel;
-    if (!chosenModel || chosenModel.includes('2.5')) {
-      chosenModel = 'gemini-1.5-flash';
-      handleChange('aiModel', 'gemini-1.5-flash');
-    }
+    setTestStatus('Verifying key with Google AI Studio...');
 
     try {
-      let url = `https://generativelanguage.googleapis.com/v1beta/models/${chosenModel}:generateContent?key=${formData.apiKey.trim()}`;
-      let res = await fetch(url, {
+      // Step 1: Query models list endpoint with API key to verify key & get available models
+      const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${rawKey}`;
+      const listRes = await fetch(listUrl);
+
+      if (!listRes.ok) {
+        let errorMsg = `HTTP ${listRes.status}`;
+        try {
+          const errData = await listRes.json();
+          if (errData.error?.message) {
+            errorMsg = errData.error.message;
+          }
+        } catch {
+          const raw = await listRes.text();
+          if (raw) errorMsg = raw.slice(0, 100);
+        }
+        setTestStatus(`Error (${listRes.status}): ${errorMsg}`);
+        return;
+      }
+
+      const listData = await listRes.json();
+      const models = listData.models || [];
+      const modelNames = models.map(m => (m.name || '').replace('models/', ''));
+
+      // Find best available model: prefer gemini-1.5-flash, gemini-2.0-flash, or first flash model
+      let targetModel = 'gemini-1.5-flash';
+      if (modelNames.includes('gemini-1.5-flash')) {
+        targetModel = 'gemini-1.5-flash';
+      } else if (modelNames.includes('gemini-2.0-flash')) {
+        targetModel = 'gemini-2.0-flash';
+      } else if (modelNames.some(m => m.includes('flash'))) {
+        targetModel = modelNames.find(m => m.includes('flash'));
+      } else if (modelNames.length > 0) {
+        targetModel = modelNames[0];
+      }
+
+      // Step 2: Test content generation with selected target model
+      const testUrl = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${rawKey}`;
+      const genRes = await fetch(testUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -77,31 +116,18 @@ export function SettingsModal({
         })
       });
 
-      // If chosen model returned 404, fallback to universal gemini-1.5-flash
-      if (res.status === 404 && chosenModel !== 'gemini-1.5-flash') {
-        chosenModel = 'gemini-1.5-flash';
-        handleChange('aiModel', 'gemini-1.5-flash');
-        url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${formData.apiKey.trim()}`;
-        res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: 'Respond with valid JSON: {"status": "ok"}' }] }],
-            generationConfig: { responseMimeType: 'application/json' }
-          })
-        });
-      }
-
-      if (res.ok) {
-        setTestStatus(`Success! Gemini API connected (${chosenModel}).`);
+      if (genRes.ok) {
+        setTestStatus(`Connected successfully! Model: ${targetModel}`);
+        handleChange('aiModel', targetModel);
         playCyberBeep(soundEnabled);
         triggerHaptic([20, 40], hapticsEnabled);
       } else {
-        const err = await res.text();
-        setTestStatus(`Connection error (${res.status}): Verify your key.`);
+        const genErr = await genRes.json().catch(() => ({}));
+        const msg = genErr.error?.message || `Generation error (${genRes.status})`;
+        setTestStatus(`Key valid! But model failed: ${msg}`);
       }
     } catch (err) {
-      setTestStatus('Network failed or invalid endpoint.');
+      setTestStatus(`Network error: ${err.message || 'Could not connect to Google API'}`);
     } finally {
       setIsTesting(false);
     }

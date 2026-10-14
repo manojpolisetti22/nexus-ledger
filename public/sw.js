@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexus-expense-v1';
+const CACHE_NAME = 'nexus-expense-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -41,10 +41,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Network-First for HTML/navigation requests so code updates apply immediately
+  if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const resClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request).then(cached => cached || caches.match('/')))
+    );
+    return;
+  }
+
+  // Stale-While-Revalidate for other static assets
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Fetch fresh in background (stale-while-revalidate)
         fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then((cache) => {
@@ -57,7 +73,6 @@ self.addEventListener('fetch', (event) => {
       return fetch(event.request).then((networkResponse) => {
         return networkResponse;
       }).catch(() => {
-        // Fallback for offline navigation
         if (event.request.mode === 'navigate') {
           return caches.match('/');
         }
