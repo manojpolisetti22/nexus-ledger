@@ -107,23 +107,23 @@ export function ExpenseList({
     return (
       <div key={title} className="mb-6">
         {/* Section Header */}
-        <div className="flex items-center justify-between px-1 mb-2">
+        <div className="flex items-center justify-between px-1 mb-2.5">
           <div className="flex items-center space-x-2">
-            <span className="w-1.5 h-3 rounded-full bg-cyan-400" />
-            <h3 className="font-mono text-xs uppercase tracking-wider text-slate-400 font-semibold">
+            <span className="w-1.5 h-3 rounded-full bg-amber-500" />
+            <h3 className="text-xs uppercase tracking-wider text-gray-800 font-bold">
               {title}
             </h3>
-            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-400">
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/40 text-gray-800 border border-white/50">
               {count}
             </span>
           </div>
-          <span className="font-mono text-xs font-semibold text-cyan-300">
+          <span className="text-xs font-bold text-gray-900">
             {currency}{total.toFixed(2)}
           </span>
         </div>
 
         {/* Expense Items List */}
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {items.map((exp) => {
             const catMeta = getCategoryMeta(exp.category);
             const IconComponent = ICON_MAP[catMeta.icon] || Tag;
@@ -132,23 +132,22 @@ export function ExpenseList({
               <div
                 key={exp.id}
                 onClick={() => handleItemClick(exp)}
-                className="glass-panel-interactive p-3.5 rounded-xl cursor-pointer relative overflow-hidden group hover:border-cyan-500/40"
+                className="bg-white/30 backdrop-blur-sm border border-white/35 rounded-2xl p-4 cursor-pointer relative overflow-hidden group hover:bg-white/45 transition-all duration-200 shadow-sm"
               >
                 {/* Subtle Left Category Accent Bar */}
                 <div 
-                  className="absolute left-0 top-0 bottom-0 w-1 transition-all group-hover:w-1.5"
+                  className="absolute left-0 top-0 bottom-0 w-1.5 transition-all group-hover:w-2"
                   style={{ backgroundColor: catMeta.color }}
                 />
 
-                <div className="flex items-center justify-between pl-1.5">
+                <div className="flex items-center justify-between pl-1">
                   
                   {/* Left: Category Icon + Merchant & Notes */}
-                  <div className="flex items-center space-x-3 truncate mr-2">
+                  <div className="flex items-center space-x-3.5 truncate mr-2">
                     <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border border-white/40 shadow-xs"
                       style={{ 
-                        backgroundColor: catMeta.bg,
-                        borderColor: catMeta.border,
+                        backgroundColor: 'rgba(255, 255, 255, 0.45)',
                         color: catMeta.color 
                       }}
                     >
@@ -157,17 +156,17 @@ export function ExpenseList({
 
                     <div className="truncate">
                       <div className="flex items-center space-x-1.5">
-                        <h4 className="font-semibold text-sm text-slate-100 truncate group-hover:text-cyan-300 transition-colors">
+                        <h4 className="font-bold text-sm text-gray-900 truncate group-hover:text-black transition-colors">
                           {exp.payee || 'Expense'}
                         </h4>
                       </div>
 
-                      <div className="flex items-center space-x-2 text-[11px] text-slate-400 mt-0.5 truncate">
-                        <span style={{ color: catMeta.color }} className="font-medium shrink-0">
+                      <div className="flex items-center space-x-2 text-xs text-gray-700 font-medium mt-0.5 truncate">
+                        <span style={{ color: catMeta.color }} className="font-semibold shrink-0">
                           {exp.category}
                         </span>
-                        <span>•</span>
-                        <span className="truncate">{exp.notes || exp.date}</span>
+                        <span className="text-gray-400">•</span>
+                        <span className="truncate text-gray-700">{exp.notes || exp.date}</span>
                       </div>
                     </div>
                   </div>
@@ -175,14 +174,14 @@ export function ExpenseList({
                   {/* Right: Amount & Chevron */}
                   <div className="flex items-center space-x-2 shrink-0">
                     <div className="text-right">
-                      <div className="font-mono text-base font-bold text-slate-100 tracking-tight group-hover:text-cyan-400 transition-colors">
+                      <div className="text-base font-extrabold text-gray-900 tracking-tight group-hover:text-black transition-colors">
                         {currency}{Number(exp.amount || 0).toFixed(2)}
                       </div>
-                      <div className="text-[10px] font-mono text-slate-500">
+                      <div className="text-[10px] font-medium text-gray-600">
                         {exp.paymentMethod ? exp.paymentMethod.replace(' (ACH)', '').replace(' (Apple/Google Pay)', '') : 'Card'}
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-gray-900 group-hover:translate-x-0.5 transition-all" />
                   </div>
 
                 </div>
@@ -198,14 +197,14 @@ export function ExpenseList({
 
   if (expenses.length === 0) {
     return (
-      <div className="my-10 glass-panel rounded-2xl p-8 text-center border-dashed border-slate-700/80">
-        <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mx-auto mb-3 text-cyan-400">
+      <div className="my-10 bg-white/35 backdrop-blur-md border border-white/40 rounded-3xl p-8 text-center shadow-sm">
+        <div className="w-12 h-12 rounded-2xl bg-white/50 border border-white/60 flex items-center justify-center mx-auto mb-3 text-gray-800 shadow-sm">
           <Inbox className="w-6 h-6" />
         </div>
-        <h3 className="font-mono text-sm font-semibold uppercase text-slate-300 tracking-wider">
-          Ledger Vector Empty
+        <h3 className="text-sm font-bold uppercase text-gray-900 tracking-wider">
+          No Expenses Recorded
         </h3>
-        <p className="text-xs text-slate-400 max-w-xs mx-auto mt-1 font-sans">
+        <p className="text-xs text-gray-700 font-medium max-w-xs mx-auto mt-1 font-sans">
           {searchQuery || selectedCategory !== 'all' 
             ? 'No expenses matched your filter criteria.'
             : 'Tap the mic or type e.g. "Paid 150 for office supplies" below to log your first expense.'}

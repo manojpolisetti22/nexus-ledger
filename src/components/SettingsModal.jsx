@@ -109,17 +109,17 @@ export function SettingsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-[calc(env(safe-area-inset-bottom,0px)+16px)] bg-space-950/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-[calc(env(safe-area-inset-bottom,0px)+16px)] bg-black/30 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-lg glass-panel bg-space-900 border border-cyan-500/30 rounded-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+        className="w-full max-w-lg bg-white/80 sm:bg-white/85 backdrop-blur-2xl border border-white/60 rounded-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-space-950/40">
+        <div className="px-6 py-4 border-b border-gray-200/60 flex items-center justify-between bg-white/40">
           <div className="flex items-center space-x-2">
-            <Settings className="w-5 h-5 text-cyan-400" />
-            <h2 className="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">
-              System Parameters // Settings
+            <Settings className="w-5 h-5 text-gray-800" />
+            <h2 className="text-sm uppercase tracking-wider text-gray-900 font-bold">
+              Settings & Preferences
             </h2>
           </div>
           <button
@@ -127,35 +127,35 @@ export function SettingsModal({
               playLaserClick(soundEnabled);
               onClose();
             }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-full text-gray-600 hover:text-black hover:bg-white/60 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Form Body */}
-        <div className="p-5 space-y-5 overflow-y-auto">
+        <div className="p-6 space-y-5 overflow-y-auto">
           
           {/* Gemini AI API Configuration */}
-          <div className="p-4 rounded-xl bg-space-950/70 border border-cyan-500/20 space-y-3">
+          <div className="p-4 rounded-2xl bg-white/50 border border-white/60 space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Sparkles className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-xs font-mono font-bold uppercase text-slate-200">
+                <Sparkles className="w-4 h-4 text-amber-600" />
+                <h3 className="text-xs font-bold uppercase text-gray-900 tracking-wider">
                   Gemini Flash AI Engine
                 </h3>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/60 text-gray-700 border border-white/60">
                 Optional
               </span>
             </div>
 
-            <p className="text-[11px] text-slate-400 leading-relaxed font-sans">
-              The app includes a <strong className="text-slate-200">smart offline parser</strong> out of the box. Adding a free Gemini API key unlocks deeper nuance, relative dates ("last tuesday"), multi-currency handling, and complex itemization.
+            <p className="text-xs text-gray-700 leading-relaxed font-sans">
+              The app includes a <strong className="text-gray-900">smart offline parser</strong> out of the box. Adding a free Gemini API key unlocks deeper nuance, relative dates ("last tuesday"), multi-currency handling, and complex itemization.
             </p>
 
             <div>
-              <label className="block text-[10px] font-mono uppercase text-slate-400 mb-1">
+              <label className="block text-[11px] font-bold uppercase text-gray-700 mb-1">
                 Gemini API Key
               </label>
               <div className="flex space-x-2">
@@ -164,18 +164,18 @@ export function SettingsModal({
                   value={formData.apiKey}
                   onChange={(e) => handleChange('apiKey', e.target.value)}
                   placeholder="AIzaSy..."
-                  className="flex-1 bg-space-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-400"
+                  className="flex-1 bg-white/70 focus:bg-white/90 border border-white/60 rounded-xl px-3.5 py-2 text-xs text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900"
                 />
                 <button
                   onClick={handleTestKey}
                   disabled={isTesting || !formData.apiKey}
-                  className="px-3 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-mono hover:bg-cyan-500/30 transition-all shrink-0"
+                  className="px-3.5 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-all shrink-0 disabled:opacity-50"
                 >
                   {isTesting ? 'Testing...' : 'Test'}
                 </button>
               </div>
               {testStatus && (
-                <div className="text-[11px] font-mono mt-1 text-cyan-400">
+                <div className="text-xs font-semibold mt-1 text-emerald-800">
                   {testStatus}
                 </div>
               )}
@@ -183,13 +183,13 @@ export function SettingsModal({
 
             {/* Model Selector */}
             <div>
-              <label className="block text-[10px] font-mono uppercase text-slate-400 mb-1">
+              <label className="block text-[11px] font-bold uppercase text-gray-700 mb-1">
                 AI Model Tier
               </label>
               <select
                 value={formData.aiModel}
                 onChange={(e) => handleChange('aiModel', e.target.value)}
-                className="w-full bg-space-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-mono focus:outline-none focus:border-cyan-400"
+                className="w-full bg-white/70 border border-white/60 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
               >
                 <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fastest & Recommended)</option>
                 <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
@@ -200,17 +200,17 @@ export function SettingsModal({
 
           {/* Preferences */}
           <div className="space-y-3">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+            <h3 className="text-xs uppercase tracking-wider font-bold text-gray-800">
               User Experience & Locale
             </h3>
 
             {/* Currency Selector */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-space-950/60 border border-slate-800">
-              <span className="text-xs text-slate-200 font-medium">Default Currency</span>
+            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/40 border border-white/50 shadow-xs">
+              <span className="text-xs text-gray-900 font-bold">Default Currency</span>
               <select
                 value={formData.currency}
                 onChange={(e) => handleChange('currency', e.target.value)}
-                className="bg-space-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-cyan-300 font-mono focus:outline-none"
+                className="bg-white/70 border border-white/60 rounded-xl px-3 py-1.5 text-xs text-gray-900 font-bold focus:outline-none focus:ring-2 focus:ring-gray-900"
               >
                 {CURRENCIES.map(c => (
                   <option key={c.symbol} value={c.symbol}>
@@ -222,12 +222,12 @@ export function SettingsModal({
 
             {/* Category Taxonomy & AI Memory Button */}
             {onOpenCategories && (
-              <div className="flex items-center justify-between p-3 rounded-xl bg-cyan-950/20 border border-cyan-500/30">
+              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/40 border border-white/50 shadow-xs">
                 <div className="flex items-center space-x-2.5">
-                  <SlidersHorizontal className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <SlidersHorizontal className="w-4 h-4 text-gray-800 shrink-0" />
                   <div>
-                    <div className="text-xs font-semibold text-slate-200">Category & AI Memory Taxonomy</div>
-                    <div className="text-[10px] text-slate-400">Add, edit, remove categories & inspect learned rules</div>
+                    <div className="text-xs font-bold text-gray-900">Categories & AI Memory</div>
+                    <div className="text-[11px] text-gray-600 font-medium">Add, edit, remove categories & inspect learned rules</div>
                   </div>
                 </div>
                 <button
@@ -238,7 +238,7 @@ export function SettingsModal({
                     onClose();
                     onOpenCategories();
                   }}
-                  className="px-3 py-1.5 text-xs font-mono font-medium text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/40 rounded-lg transition-colors shrink-0"
+                  className="px-3.5 py-1.5 text-xs font-bold text-white bg-gray-900 hover:bg-black rounded-xl transition-all shadow-sm shrink-0"
                 >
                   Manage
                 </button>
@@ -246,61 +246,61 @@ export function SettingsModal({
             )}
 
             {/* Audio Toggle */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-space-950/60 border border-slate-800">
-              <div className="flex items-center space-x-2">
+            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/40 border border-white/50 shadow-xs">
+              <div className="flex items-center space-x-2.5">
                 {formData.soundEnabled ? (
-                  <Volume2 className="w-4 h-4 text-cyan-400" />
+                  <Volume2 className="w-4 h-4 text-amber-600" />
                 ) : (
-                  <VolumeX className="w-4 h-4 text-slate-500" />
+                  <VolumeX className="w-4 h-4 text-gray-400" />
                 )}
                 <div>
-                  <div className="text-xs font-semibold text-slate-200">Cybernetic Audio Effects</div>
-                  <div className="text-[10px] text-slate-500">Synthesized audio cues on speech & logging</div>
+                  <div className="text-xs font-bold text-gray-900">Audio Feedback</div>
+                  <div className="text-[11px] text-gray-600 font-medium">Sound cues on speech dictation & expense logging</div>
                 </div>
               </div>
               <input
                 type="checkbox"
                 checked={formData.soundEnabled}
                 onChange={(e) => handleChange('soundEnabled', e.target.checked)}
-                className="w-4 h-4 accent-cyan-400 rounded cursor-pointer"
+                className="w-4 h-4 accent-gray-900 rounded cursor-pointer"
               />
             </div>
 
             {/* Haptics Toggle */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-space-950/60 border border-slate-800">
-              <div className="flex items-center space-x-2">
-                <Smartphone className="w-4 h-4 text-cyan-400" />
+            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/40 border border-white/50 shadow-xs">
+              <div className="flex items-center space-x-2.5">
+                <Smartphone className="w-4 h-4 text-amber-600" />
                 <div>
-                  <div className="text-xs font-semibold text-slate-200">Haptic Vibration</div>
-                  <div className="text-[10px] text-slate-500">Tactile pulse on phone button taps</div>
+                  <div className="text-xs font-bold text-gray-900">Haptic Vibration</div>
+                  <div className="text-[11px] text-gray-600 font-medium">Tactile pulse on phone button taps</div>
                 </div>
               </div>
               <input
                 type="checkbox"
                 checked={formData.hapticsEnabled}
                 onChange={(e) => handleChange('hapticsEnabled', e.target.checked)}
-                className="w-4 h-4 accent-cyan-400 rounded cursor-pointer"
+                className="w-4 h-4 accent-gray-900 rounded cursor-pointer"
               />
             </div>
           </div>
 
-          {/* Backup & Danger Zone */}
-          <div className="space-y-3 pt-2 border-t border-slate-800">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+          {/* Backup & Data Management */}
+          <div className="space-y-3 pt-2 border-t border-gray-200/60">
+            <h3 className="text-xs uppercase tracking-wider font-bold text-gray-800">
               Data Management & Backup
             </h3>
 
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => exportBackup(expenses, formData)}
-                className="py-2.5 px-3 rounded-xl bg-space-850 border border-slate-700 text-xs text-slate-200 hover:border-cyan-400 flex items-center justify-center space-x-1.5 transition-colors font-mono"
+                className="py-2.5 px-3 rounded-xl bg-white/50 hover:bg-white/70 border border-white/60 text-xs font-bold text-gray-900 flex items-center justify-center space-x-1.5 transition-colors shadow-xs"
               >
-                <Download className="w-3.5 h-3.5 text-cyan-400" />
+                <Download className="w-3.5 h-3.5 text-gray-800" />
                 <span>JSON Backup</span>
               </button>
 
-              <label className="py-2.5 px-3 rounded-xl bg-space-850 border border-slate-700 text-xs text-slate-200 hover:border-cyan-400 flex items-center justify-center space-x-1.5 transition-colors font-mono cursor-pointer text-center">
-                <Upload className="w-3.5 h-3.5 text-cyan-400" />
+              <label className="py-2.5 px-3 rounded-xl bg-white/50 hover:bg-white/70 border border-white/60 text-xs font-bold text-gray-900 flex items-center justify-center space-x-1.5 transition-colors shadow-xs cursor-pointer text-center">
+                <Upload className="w-3.5 h-3.5 text-gray-800" />
                 <span>Restore JSON</span>
                 <input
                   type="file"
@@ -318,7 +318,7 @@ export function SettingsModal({
                     onResetExpenses(INITIAL_EXPENSES);
                   }
                 }}
-                className="flex-1 py-2 px-3 rounded-xl border border-slate-800 text-[11px] text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors font-mono"
+                className="flex-1 py-2 px-3 rounded-xl bg-white/40 hover:bg-white/65 border border-white/50 text-xs text-gray-800 font-semibold transition-colors"
               >
                 Reload Demo Data
               </button>
@@ -329,7 +329,7 @@ export function SettingsModal({
                     onResetExpenses([]);
                   }
                 }}
-                className="py-2 px-3 rounded-xl border border-rose-500/30 text-[11px] text-rose-400 hover:bg-rose-500/10 transition-colors font-mono"
+                className="py-2 px-3 rounded-xl border border-red-300 text-xs text-red-700 bg-white/40 hover:bg-red-50 font-semibold transition-colors"
               >
                 Clear Ledger
               </button>
@@ -337,8 +337,8 @@ export function SettingsModal({
           </div>
 
           {/* Version Info */}
-          <div className="text-center text-[10px] font-mono text-slate-500 pt-1">
-            NEXUS EXPENSE PWA v1.0 • QUANTUM LOCAL-FIRST STORAGE
+          <div className="text-center text-xs text-gray-600 font-medium pt-1">
+            Nexus Ledger PWA • Local-First & Cloud Synchronized
           </div>
 
         </div>

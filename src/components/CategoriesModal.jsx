@@ -214,21 +214,21 @@ export function CategoriesModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-[calc(env(safe-area-inset-bottom,0px)+16px)] bg-space-950/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pt-[calc(env(safe-area-inset-top,0px)+16px)] pb-[calc(env(safe-area-inset-bottom,0px)+16px)] bg-black/30 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-lg glass-panel bg-space-900 border border-cyan-500/30 rounded-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+        className="w-full max-w-lg bg-white/80 sm:bg-white/85 backdrop-blur-2xl border border-white/60 rounded-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-space-950/40 shrink-0">
-          <div className="flex items-center space-x-2">
-            <Tag className="w-5 h-5 text-cyan-400" />
+        <div className="px-6 py-4 border-b border-gray-200/60 flex items-center justify-between bg-white/40 shrink-0">
+          <div className="flex items-center space-x-2.5">
+            <Tag className="w-5 h-5 text-gray-800" />
             <div>
-              <h2 className="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">
-                Taxonomy // Manage Categories
+              <h2 className="text-sm uppercase tracking-wider text-gray-900 font-bold">
+                Categories & AI Memory
               </h2>
-              <p className="text-[10px] text-slate-400 font-mono">
-                {categories.length} active • Powers AI & NLP matching
+              <p className="text-xs text-gray-600 font-medium">
+                {categories.length} active • Powers categorization
               </p>
             </div>
           </div>
@@ -237,24 +237,24 @@ export function CategoriesModal({
               playLaserClick(soundEnabled);
               onClose();
             }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-full text-gray-600 hover:text-black hover:bg-white/60 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Bar */}
-        <div className="px-5 pt-3 pb-2 border-b border-slate-800/80 flex items-center justify-between shrink-0 bg-space-900/60">
-          <div className="flex space-x-1 p-1 rounded-xl bg-space-950 border border-slate-800">
+        <div className="px-6 pt-3 pb-2.5 border-b border-gray-200/60 flex items-center justify-between shrink-0 bg-white/30">
+          <div className="flex space-x-1 p-1 rounded-2xl bg-white/40 border border-white/50">
             <button
               onClick={() => {
                 playLaserClick(soundEnabled);
                 setActiveTab('categories');
               }}
-              className={`px-3 py-1 rounded-lg text-xs font-mono transition-all flex items-center space-x-1.5 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 ${
                 activeTab === 'categories'
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'text-gray-700 hover:text-black'
               }`}
             >
               <Tag className="w-3.5 h-3.5" />
@@ -265,14 +265,14 @@ export function CategoriesModal({
                 playLaserClick(soundEnabled);
                 setActiveTab('learned');
               }}
-              className={`px-3 py-1 rounded-lg text-xs font-mono transition-all flex items-center space-x-1.5 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 ${
                 activeTab === 'learned'
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-gray-900 text-white shadow-sm'
+                  : 'text-gray-700 hover:text-black'
               }`}
             >
-              <BrainCircuit className="w-3.5 h-3.5 text-violet-400" />
-              <span>AI Learned Memory ({learnedRules.length})</span>
+              <BrainCircuit className="w-3.5 h-3.5 text-amber-500" />
+              <span>Learned Memory ({learnedRules.length})</span>
             </button>
           </div>
 
@@ -283,7 +283,7 @@ export function CategoriesModal({
                 setIsAdding(true);
                 setErrorMsg('');
               }}
-              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-black text-xs font-mono font-semibold transition-all shadow-neon-cyan"
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold uppercase transition-all shadow-md active:scale-95"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add</span>
@@ -292,10 +292,10 @@ export function CategoriesModal({
         </div>
 
         {/* Content Body */}
-        <div className="p-5 space-y-4 overflow-y-auto flex-1">
+        <div className="p-6 space-y-4 overflow-y-auto flex-1">
           {errorMsg && (
-            <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center space-x-2 text-rose-300 text-xs font-mono">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+            <div className="p-3 rounded-2xl bg-red-50 border border-red-300 flex items-center space-x-2 text-red-900 text-xs font-semibold">
+              <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
               <span>{errorMsg}</span>
             </div>
           )}
@@ -304,23 +304,23 @@ export function CategoriesModal({
             <>
               {/* Add New Category Form Drawer */}
               {isAdding && (
-                <form onSubmit={handleAddCategory} className="p-4 rounded-xl bg-space-950/80 border border-cyan-500/30 space-y-3 animate-in fade-in duration-200">
+                <form onSubmit={handleAddCategory} className="p-4 rounded-2xl bg-white/60 border border-white/60 space-y-3.5 animate-in fade-in duration-200 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-cyan-300 uppercase flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
                       <Plus className="w-3.5 h-3.5" />
                       New Category
                     </span>
                     <button
                       type="button"
                       onClick={() => setIsAdding(false)}
-                      className="text-slate-500 hover:text-slate-300 text-xs font-mono"
+                      className="text-gray-600 hover:text-black text-xs font-semibold"
                     >
                       Cancel
                     </button>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-gray-700 uppercase mb-1">
                       Category Name
                     </label>
                     <input
@@ -329,13 +329,13 @@ export function CategoriesModal({
                       placeholder="e.g. Food, Groceries, Fitness, Rent"
                       value={newName}
                       onChange={(e) => setNewName(e.target.value)}
-                      className="w-full bg-space-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-cyan-400 font-sans"
+                      className="w-full bg-white/70 focus:bg-white/90 border border-white/60 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-900 font-sans"
                     />
                   </div>
 
                   {/* Color Swatches */}
                   <div>
-                    <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-gray-700 uppercase mb-1">
                       Accent Color
                     </label>
                     <div className="flex items-center space-x-2 flex-wrap gap-y-2">
@@ -345,7 +345,7 @@ export function CategoriesModal({
                           key={c}
                           onClick={() => setNewColor(c)}
                           className={`w-6 h-6 rounded-full border-2 transition-all ${
-                            newColor === c ? 'border-white scale-110 shadow-lg' : 'border-transparent opacity-70 hover:opacity-100'
+                            newColor === c ? 'border-gray-900 scale-110 shadow-md' : 'border-transparent opacity-75 hover:opacity-100'
                           }`}
                           style={{ backgroundColor: c }}
                         />
@@ -355,10 +355,10 @@ export function CategoriesModal({
 
                   {/* Icon Selector */}
                   <div>
-                    <label className="block text-[10px] font-mono text-slate-400 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-gray-700 uppercase mb-1">
                       Category Icon
                     </label>
-                    <div className="flex items-center space-x-1.5 flex-wrap gap-y-1.5 max-h-24 overflow-y-auto p-1 bg-space-900 rounded-xl border border-slate-800">
+                    <div className="flex items-center space-x-1.5 flex-wrap gap-y-1.5 max-h-24 overflow-y-auto p-1.5 bg-white/50 rounded-xl border border-white/50">
                       {AVAILABLE_ICONS.map(i => (
                         <button
                           type="button"
@@ -366,8 +366,8 @@ export function CategoriesModal({
                           onClick={() => setNewIcon(i.name)}
                           className={`p-1.5 rounded-lg border transition-all ${
                             newIcon === i.name
-                              ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
-                              : 'border-transparent text-slate-500 hover:text-slate-300 hover:bg-space-800'
+                              ? 'bg-gray-900 text-white border-gray-900'
+                              : 'border-transparent text-gray-600 hover:text-black hover:bg-white/60'
                           }`}
                           title={i.name}
                         >
@@ -379,7 +379,7 @@ export function CategoriesModal({
 
                   <button
                     type="submit"
-                    className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 text-black font-semibold text-xs font-mono uppercase tracking-wide transition-all shadow-neon-cyan"
+                    className="w-full py-2.5 px-3 rounded-xl bg-gray-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wide transition-all shadow-md active:scale-98"
                   >
                     Save Category
                   </button>
@@ -394,19 +394,19 @@ export function CategoriesModal({
 
                   if (isEditing) {
                     return (
-                      <div key={cat.id} className="p-3 rounded-xl bg-space-950 border border-cyan-500/50 space-y-2">
+                      <div key={cat.id} className="p-3.5 rounded-2xl bg-white/70 border border-gray-900/30 space-y-2.5 shadow-sm">
                         <div className="flex items-center space-x-2">
                           <input
                             type="text"
                             required
                             value={editName}
                             onChange={(e) => setEditName(e.target.value)}
-                            className="flex-1 bg-space-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-400"
+                            className="flex-1 bg-white border border-gray-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
                           />
                           <button
                             type="button"
                             onClick={() => handleSaveEdit(cat.id)}
-                            className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30"
+                            className="p-2 rounded-xl bg-gray-900 text-white hover:bg-black"
                             title="Save"
                           >
                             <Check className="w-4 h-4" />
@@ -414,7 +414,7 @@ export function CategoriesModal({
                           <button
                             type="button"
                             onClick={() => setEditingCatId(null)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200"
+                            className="p-2 rounded-xl text-gray-600 hover:text-black"
                             title="Cancel"
                           >
                             <X className="w-4 h-4" />
@@ -428,8 +428,8 @@ export function CategoriesModal({
                               type="button"
                               key={c}
                               onClick={() => setEditColor(c)}
-                              className={`w-5 h-5 rounded-full border transition-all ${
-                                editColor === c ? 'border-white scale-110' : 'border-transparent opacity-60'
+                              className={`w-5 h-5 rounded-full border-2 transition-all ${
+                                editColor === c ? 'border-gray-900 scale-110' : 'border-transparent opacity-70'
                               }`}
                               style={{ backgroundColor: c }}
                             />
@@ -442,24 +442,22 @@ export function CategoriesModal({
                   return (
                     <div
                       key={cat.id}
-                      className="p-2.5 rounded-xl bg-space-900/70 border border-slate-800/80 hover:border-slate-700/80 flex items-center justify-between transition-all"
+                      className="p-3 rounded-2xl bg-white/40 border border-white/50 hover:bg-white/60 flex items-center justify-between transition-all shadow-xs"
                     >
                       <div className="flex items-center space-x-3">
                         <div 
-                          className="w-8 h-8 rounded-lg flex items-center justify-center border"
+                          className="w-9 h-9 rounded-xl flex items-center justify-center border border-white/40 bg-white/60 shadow-xs"
                           style={{ 
-                            backgroundColor: cat.bg || `${cat.color}20`,
-                            borderColor: cat.border || `${cat.color}50`,
                             color: cat.color 
                           }}
                         >
                           {renderIcon(cat.icon)}
                         </div>
                         <div>
-                          <span className="text-xs font-medium text-slate-100 font-sans">
+                          <span className="text-xs font-bold text-gray-900 font-sans block">
                             {cat.name}
                           </span>
-                          <span className="block text-[10px] font-mono text-slate-500">
+                          <span className="block text-[11px] text-gray-600 font-medium">
                             {expCount} {expCount === 1 ? 'expense' : 'expenses'}
                           </span>
                         </div>
@@ -469,7 +467,7 @@ export function CategoriesModal({
                         <button
                           type="button"
                           onClick={() => handleStartEdit(cat)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-space-800 transition-colors"
+                          className="p-1.5 rounded-lg text-gray-600 hover:text-black hover:bg-white/60 transition-colors"
                           title="Edit Category"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -478,7 +476,7 @@ export function CategoriesModal({
                           <button
                             type="button"
                             onClick={() => handleDeleteCategory(cat)}
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-space-800 transition-colors"
+                            className="p-1.5 rounded-lg text-gray-600 hover:text-red-600 hover:bg-white/60 transition-colors"
                             title="Delete Category"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -493,27 +491,27 @@ export function CategoriesModal({
           ) : (
             /* AI Learned Memory Tab */
             <div className="space-y-3">
-              <div className="p-3 rounded-xl bg-violet-950/20 border border-violet-500/30 flex items-start space-x-2.5 text-xs">
-                <Sparkles className="w-4 h-4 text-violet-400 shrink-0 mt-0.5" />
-                <div className="text-[11px] text-slate-300 space-y-1">
-                  <p className="font-semibold text-white">Adaptive Learning Engine</p>
-                  <p className="text-slate-400">
+              <div className="p-3.5 rounded-2xl bg-amber-500/15 border border-amber-600/25 flex items-start space-x-2.5 text-xs shadow-xs">
+                <Sparkles className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <div className="text-xs text-amber-950 space-y-1">
+                  <p className="font-bold">Adaptive Learning Engine</p>
+                  <p className="text-amber-900/90 font-medium">
                     Whenever you edit an expense's category, Nexus automatically learns the pattern. Future expenses matching that merchant or phrase will automatically adopt your learned category.
                   </p>
                 </div>
               </div>
 
               {learnedRules.length === 0 ? (
-                <div className="py-8 text-center text-slate-500">
-                  <BrainCircuit className="w-8 h-8 mx-auto text-slate-600 mb-2 opacity-50" />
-                  <p className="text-xs font-mono">No learned associations yet</p>
-                  <p className="text-[11px] text-slate-600 mt-0.5">
+                <div className="py-8 text-center text-gray-500">
+                  <BrainCircuit className="w-8 h-8 mx-auto text-gray-400 mb-2 opacity-50" />
+                  <p className="text-xs font-semibold text-gray-700">No learned associations yet</p>
+                  <p className="text-xs text-gray-600 mt-0.5 font-medium">
                     Edit any logged expense to train Nexus to your personal preferences.
                   </p>
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pb-1">
+                  <div className="flex items-center justify-between text-xs text-gray-700 font-semibold pb-1">
                     <span>Learned Associations ({learnedRules.length})</span>
                     {onClearLearnedRules && (
                       <button
@@ -523,7 +521,7 @@ export function CategoriesModal({
                             playDeleteGlitch(soundEnabled);
                           }
                         }}
-                        className="text-rose-400 hover:text-rose-300 flex items-center space-x-1"
+                        className="text-red-700 hover:text-red-900 flex items-center space-x-1 font-semibold"
                       >
                         <RotateCcw className="w-3 h-3" />
                         <span>Reset Memory</span>
@@ -531,18 +529,18 @@ export function CategoriesModal({
                     )}
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     {learnedRules.map((rule) => (
                       <div
                         key={rule.id}
-                        className="p-2.5 rounded-xl bg-space-900/80 border border-slate-800 flex items-center justify-between"
+                        className="p-3 rounded-2xl bg-white/40 border border-white/50 flex items-center justify-between shadow-xs"
                       >
                         <div className="flex items-center space-x-2 truncate">
-                          <span className="font-mono text-xs text-cyan-300 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-500/30">
+                          <span className="text-xs font-bold text-gray-900 bg-white/60 px-2.5 py-1 rounded-lg border border-white/60">
                             "{rule.pattern}"
                           </span>
-                          <span className="text-slate-500 text-xs">➔</span>
-                          <span className="font-mono text-xs font-semibold text-white">
+                          <span className="text-gray-400 text-xs">➔</span>
+                          <span className="text-xs font-extrabold text-gray-900">
                             {rule.category}
                           </span>
                         </div>
@@ -553,7 +551,7 @@ export function CategoriesModal({
                               playDeleteGlitch(soundEnabled);
                               onDeleteLearnedRule(rule.id);
                             }}
-                            className="p-1 text-slate-500 hover:text-rose-400 transition-colors"
+                            className="p-1 text-gray-500 hover:text-red-600 transition-colors"
                             title="Remove Rule"
                           >
                             <Trash2 className="w-3.5 h-3.5" />

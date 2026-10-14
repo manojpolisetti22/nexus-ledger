@@ -293,11 +293,12 @@ export function App() {
   }, [expenses]);
 
   return (
-    <div className="min-h-screen bg-space-950 text-slate-100 bg-cyber-grid flex flex-col relative selection:bg-cyan-500 selection:text-black">
+    <div className="relative z-10 min-h-screen text-gray-900 flex flex-col font-sans selection:bg-amber-400 selection:text-black">
       
-      {/* Futuristic Background Ambient Glows */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[128px] pointer-events-none" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-[140px] pointer-events-none" />
+      {/* Dull Gray Base Canvas with Slow Moving Yellow-Orange Sun (25s Loop) */}
+      <div className="nexus-sky-canvas" aria-hidden="true">
+        <div className="nexus-blurred-sun" />
+      </div>
 
       {/* Main App Header */}
       <Header
@@ -314,7 +315,7 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-2xl mx-auto px-3 sm:px-4 pt-2">
+      <main className="flex-1 w-full max-w-2xl mx-auto px-3 sm:px-5 pt-2 sm:my-4 sm:rounded-3xl sm:bg-white/15 sm:backdrop-blur-xl sm:border sm:border-white/30 sm:shadow-xl sm:shadow-black/5">
         
         {/* Quick HUD Telemetry Cards */}
         <QuickStats

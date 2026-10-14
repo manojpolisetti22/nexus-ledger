@@ -9,9 +9,9 @@
   }
 
   body {
-    background-color: #030712;
-    color: #f1f5f9;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #6b7280;
+    color: #111827;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-touch-callout: none;
@@ -30,79 +30,124 @@
   .safe-bottom {
     padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-/* Custom Futuristic Scrollbar */
+/* Dull Gray Base Canvas */
+.nexus-sky-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: #6b7280; /* Dull, muted gray backdrop */
+  overflow: hidden;
+  z-index: -10;
+  pointer-events: none; /* Ensures background NEVER blocks clicks */
+}
+
+/* The Blurred Yellow-Orange Sun Orb */
+.nexus-blurred-sun {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 75vw;
+  height: 75vw;
+  max-width: 750px;
+  max-height: 750px;
+  min-width: 420px;
+  min-height: 420px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(254, 240, 138, 0.95) 0%,   /* Bright warm yellow core */
+    rgba(251, 191, 36, 0.85) 30%,   /* Golden amber */
+    rgba(249, 115, 22, 0.70) 60%,   /* Deep warm orange */
+    rgba(107, 114, 128, 0) 100%     /* Seamless fade into dull gray */
+  );
+  filter: blur(80px);
+  -webkit-filter: blur(80px);
+  will-change: transform;
+  animation: sunDriftLeftToRight 25s ease-in-out infinite;
+}
+
+@keyframes sunDriftLeftToRight {
+  0% {
+    transform: translate(-35%, -55%) scale(0.95);
+  }
+  50% {
+    transform: translate(65vw, -45%) scale(1.08);
+  }
+  100% {
+    transform: translate(-35%, -55%) scale(0.95);
+  }
+}
+
+/* Custom Minimalist Clean Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(3, 7, 18, 0.8);
+  background: rgba(107, 114, 128, 0.15);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 240, 255, 0.25);
+  background: rgba(17, 24, 39, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 240, 255, 0.5);
+  background: rgba(17, 24, 39, 0.45);
 }
 
-/* Cybernetic Glass & Glow Effects */
+/* Clean Modern Glassmorphism System */
 .glass-panel {
-  background: rgba(11, 17, 34, 0.65);
+  background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 240, 255, 0.12);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
 }
 
 .glass-panel-interactive {
-  background: rgba(11, 17, 34, 0.65);
+  background: rgba(255, 255, 255, 0.32);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 240, 255, 0.12);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.05);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.glass-panel-interactive:hover {
+  background: rgba(255, 255, 255, 0.48);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.08);
+}
+
 .glass-panel-interactive:active {
-  transform: scale(0.98);
-  border-color: rgba(0, 240, 255, 0.35);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  transform: scale(0.985);
 }
 
-.glow-border-cyan {
-  border: 1px solid rgba(0, 240, 255, 0.4);
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+.glass-modal {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18);
 }
 
-.glow-border-violet {
-  border: 1px solid rgba(168, 85, 247, 0.4);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
-}
-
-.glow-border-emerald {
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-}
-
-/* Cyber Grid Background lines */
-.bg-cyber-grid {
-  background-image: 
-    linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-/* Pulsating Sound Wave Bars */
+/* Dynamic Sound Wave Bars for Voice Dictation */
 .sound-wave-bar {
   animation: soundWave 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes soundWave {
   0% { height: 6px; }
-  100% { height: 28px; }
+  100% { height: 26px; }
 }
 
 .sound-wave-bar:nth-child(2) { animation-delay: 0.15s; }

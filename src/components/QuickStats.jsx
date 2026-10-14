@@ -41,21 +41,23 @@ export function QuickStats({ expenses, currency = '$', onFilterChange, activeFil
       {/* Today HUD Card */}
       <div 
         onClick={() => onFilterChange && onFilterChange(activeFilter === 'today' ? 'all' : 'today')}
-        className={`glass-panel-interactive p-3 rounded-xl cursor-pointer relative overflow-hidden ${
-          activeFilter === 'today' ? 'border-cyan-400 bg-cyan-950/30' : 'hover:border-cyan-500/30'
+        className={`glass-panel-interactive p-3.5 rounded-2xl cursor-pointer relative overflow-hidden transition-all ${
+          activeFilter === 'today' 
+            ? 'bg-white/60 border-gray-900/40 ring-2 ring-gray-900/10 shadow-md' 
+            : 'border-white/40'
         }`}
       >
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[10px] font-mono tracking-wider uppercase text-slate-400 flex items-center gap-1">
-            <Flame className="w-3 h-3 text-cyan-400" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+            <Flame className="w-3.5 h-3.5 text-amber-600" />
             Today
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
         </div>
-        <div className="font-mono text-lg font-bold text-slate-100 tracking-tight">
+        <div className="text-xl font-extrabold text-gray-900 tracking-tight">
           {currency}{spentToday.toFixed(2)}
         </div>
-        <div className="text-[10px] text-cyan-400/80 font-mono mt-0.5">
+        <div className="text-[11px] text-gray-700 font-medium mt-0.5">
           {expenses.filter(e => e.date === todayStr).length} logged
         </div>
       </div>
@@ -63,20 +65,22 @@ export function QuickStats({ expenses, currency = '$', onFilterChange, activeFil
       {/* 7 Days HUD Card */}
       <div 
         onClick={() => onFilterChange && onFilterChange(activeFilter === 'week' ? 'all' : 'week')}
-        className={`glass-panel-interactive p-3 rounded-xl cursor-pointer relative overflow-hidden ${
-          activeFilter === 'week' ? 'border-violet-400 bg-violet-950/30' : 'hover:border-violet-500/30'
+        className={`glass-panel-interactive p-3.5 rounded-2xl cursor-pointer relative overflow-hidden transition-all ${
+          activeFilter === 'week' 
+            ? 'bg-white/60 border-gray-900/40 ring-2 ring-gray-900/10 shadow-md' 
+            : 'border-white/40'
         }`}
       >
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[10px] font-mono tracking-wider uppercase text-slate-400 flex items-center gap-1">
-            <Calendar className="w-3 h-3 text-violet-400" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 text-orange-600" />
             7 Days
           </span>
         </div>
-        <div className="font-mono text-lg font-bold text-slate-100 tracking-tight">
+        <div className="text-xl font-extrabold text-gray-900 tracking-tight">
           {currency}{spentWeek.toFixed(2)}
         </div>
-        <div className="text-[10px] text-violet-400/80 font-mono mt-0.5">
+        <div className="text-[11px] text-gray-700 font-medium mt-0.5">
           Weekly burn
         </div>
       </div>
@@ -84,20 +88,22 @@ export function QuickStats({ expenses, currency = '$', onFilterChange, activeFil
       {/* Month HUD Card */}
       <div 
         onClick={() => onFilterChange && onFilterChange(activeFilter === 'month' ? 'all' : 'month')}
-        className={`glass-panel-interactive p-3 rounded-xl cursor-pointer relative overflow-hidden ${
-          activeFilter === 'month' ? 'border-sky-400 bg-sky-950/30' : 'hover:border-sky-500/30'
+        className={`glass-panel-interactive p-3.5 rounded-2xl cursor-pointer relative overflow-hidden transition-all ${
+          activeFilter === 'month' 
+            ? 'bg-white/60 border-gray-900/40 ring-2 ring-gray-900/10 shadow-md' 
+            : 'border-white/40'
         }`}
       >
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[10px] font-mono tracking-wider uppercase text-slate-400 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3 text-sky-400" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+            <TrendingUp className="w-3.5 h-3.5 text-amber-700" />
             This Month
           </span>
         </div>
-        <div className="font-mono text-lg font-bold text-slate-100 tracking-tight">
+        <div className="text-xl font-extrabold text-gray-900 tracking-tight">
           {currency}{spentMonth.toFixed(2)}
         </div>
-        <div className="text-[10px] text-sky-400/80 font-mono mt-0.5">
+        <div className="text-[11px] text-gray-700 font-medium mt-0.5">
           Billing cycle
         </div>
       </div>
@@ -105,18 +111,22 @@ export function QuickStats({ expenses, currency = '$', onFilterChange, activeFil
       {/* Average / Log HUD Card */}
       <div 
         onClick={() => onFilterChange && onFilterChange('all')}
-        className="glass-panel-interactive p-3 rounded-xl cursor-pointer relative overflow-hidden hover:border-emerald-500/30"
+        className={`glass-panel-interactive p-3.5 rounded-2xl cursor-pointer relative overflow-hidden transition-all ${
+          activeFilter === 'all'
+            ? 'bg-white/60 border-gray-900/40 ring-2 ring-gray-900/10 shadow-md'
+            : 'border-white/40'
+        }`}
       >
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[10px] font-mono tracking-wider uppercase text-slate-400 flex items-center gap-1">
-            <Activity className="w-3 h-3 text-emerald-400" />
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+            <Activity className="w-3.5 h-3.5 text-emerald-700" />
             Avg / Log
           </span>
         </div>
-        <div className="font-mono text-lg font-bold text-emerald-400 tracking-tight">
+        <div className="text-xl font-extrabold text-gray-900 tracking-tight">
           {currency}{avgSpend.toFixed(2)}
         </div>
-        <div className="text-[10px] text-emerald-400/80 font-mono mt-0.5">
+        <div className="text-[11px] text-gray-700 font-medium mt-0.5">
           {expenses.length} total entries
         </div>
       </div>

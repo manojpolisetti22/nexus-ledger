@@ -21,18 +21,18 @@ export function FilterBar({
       {/* Search Input + Sort Bar */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search merchant, notes, amount..."
-            className="w-full bg-space-900/60 border border-slate-800 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/60 transition-all font-sans"
+            className="w-full bg-white/45 focus:bg-white/75 border border-white/50 rounded-2xl pl-9 pr-8 py-2.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-900 shadow-sm transition-all font-sans"
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-slate-500 hover:text-slate-300"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-500 hover:text-gray-800"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -44,7 +44,7 @@ export function FilterBar({
           <select
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            className="bg-space-900/80 border border-slate-800 rounded-xl px-2.5 py-2 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-cyan-500/60 cursor-pointer"
+            className="bg-white/45 focus:bg-white/75 border border-white/50 rounded-2xl px-3 py-2.5 text-xs font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 cursor-pointer shadow-sm transition-all"
           >
             <option value="newest">Newest First</option>
             <option value="highest">Highest Amount</option>
@@ -64,10 +64,10 @@ export function FilterBar({
               triggerHaptic(10, hapticsEnabled);
               onOpenCategories();
             }}
-            className="text-[11px] font-mono px-2.5 py-1 rounded-full whitespace-nowrap transition-all border shrink-0 flex items-center space-x-1 bg-cyan-500/10 border-cyan-500/30 text-cyan-300 hover:border-cyan-400/60 hover:bg-cyan-500/20"
+            className="text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap transition-all border shrink-0 flex items-center space-x-1.5 bg-white/40 border-white/50 text-gray-900 hover:bg-white/60 shadow-sm"
             title="Edit, Add or Remove Categories"
           >
-            <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-gray-800" />
             <span>Categories</span>
           </button>
         )}
@@ -78,10 +78,10 @@ export function FilterBar({
             triggerHaptic(10, hapticsEnabled);
             onCategoryChange('all');
           }}
-          className={`text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap transition-all border shrink-0 ${
+          className={`text-xs font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all shrink-0 ${
             selectedCategory === 'all'
-              ? 'bg-cyan-500/20 border-cyan-400/50 text-cyan-300 shadow-[0_0_8px_rgba(0,240,255,0.2)]'
-              : 'bg-space-900/40 border-slate-800 text-slate-400 hover:border-slate-700'
+              ? 'bg-gray-900 text-white shadow-md border border-gray-900'
+              : 'bg-white/35 hover:bg-white/55 border border-white/45 text-gray-800'
           }`}
         >
           All
@@ -97,13 +97,13 @@ export function FilterBar({
                 triggerHaptic(10, hapticsEnabled);
                 onCategoryChange(isSelected ? 'all' : cat.name);
               }}
-              className={`text-[11px] font-mono px-2.5 py-1 rounded-full whitespace-nowrap transition-all border shrink-0 flex items-center space-x-1.5 ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap transition-all shrink-0 flex items-center space-x-1.5 ${
                 isSelected
-                  ? 'border-cyan-400 bg-cyan-950/40 text-cyan-200 shadow-[0_0_8px_rgba(0,240,255,0.2)]'
-                  : 'bg-space-900/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                  ? 'bg-gray-900 text-white shadow-md border border-gray-900'
+                  : 'bg-white/35 hover:bg-white/55 border border-white/45 text-gray-800'
               }`}
             >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cat.color }} />
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: cat.color }} />
               <span>{cat.name}</span>
             </button>
           );

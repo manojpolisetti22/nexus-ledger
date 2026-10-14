@@ -53,32 +53,31 @@ export function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-space-950/85 backdrop-blur-xl border-b border-cyan-500/20 px-4 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-3 shadow-lg">
+    <header className="sticky top-0 z-40 w-full bg-white/35 backdrop-blur-xl border-b border-white/40 px-4 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-3 shadow-sm">
       <div className="max-w-2xl mx-auto flex items-center justify-between">
         
         {/* Brand / Logo */}
         <div className="flex items-center space-x-2.5">
-          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-400/40 shadow-neon-cyan">
-            <Zap className="w-5 h-5 text-cyan-400 animate-pulse" />
-            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping opacity-75" />
+          <div className="relative flex items-center justify-center w-9 h-9 rounded-2xl bg-gray-900 text-white shadow-md">
+            <Zap className="w-5 h-5 text-amber-400" />
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="font-mono text-xs tracking-wider font-extrabold uppercase bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-sky-300 to-violet-400">
-                NEXUS
+              <span className="text-sm font-extrabold tracking-tight text-gray-900 uppercase">
+                Nexus
               </span>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
-                LEDGER
+              <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded-full bg-white/45 text-gray-800 border border-white/50">
+                Ledger
               </span>
             </div>
-            <div className="flex items-center space-x-2 text-[10px] text-slate-400 font-mono">
+            <div className="flex items-center space-x-2 text-[11px] text-gray-700 font-medium">
               <span className="flex items-center space-x-1">
                 <span className={`w-1.5 h-1.5 rounded-full ${
                   currentUser 
-                    ? 'bg-emerald-400 shadow-[0_0_8px_#10B981]' 
-                    : isOnline ? 'bg-cyan-400 shadow-[0_0_8px_#06B6D4]' : 'bg-rose-400'
+                    ? 'bg-emerald-600' 
+                    : isOnline ? 'bg-amber-500' : 'bg-red-600'
                 }`} />
-                <span>{currentUser ? 'CLOUD SYNC' : (isOnline ? 'LOCAL' : 'OFFLINE')}</span>
+                <span>{currentUser ? 'Cloud Synced' : (isOnline ? 'Local' : 'Offline')}</span>
               </span>
               <span>•</span>
               <span>{time}</span>
@@ -91,38 +90,38 @@ export function Header({
           {/* Quick Month Pill */}
           <button 
             onClick={() => handleClick(onOpenAnalytics)}
-            className="hidden sm:flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-space-850/80 border border-cyan-500/20 text-xs font-mono text-cyan-300 hover:border-cyan-400/50 transition-all"
-            title="Monthly Telemetry"
+            className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/35 hover:bg-white/55 border border-white/45 text-xs text-gray-900 font-semibold shadow-sm transition-all"
+            title="Monthly Summary"
           >
-            <span className="text-[10px] text-slate-400 uppercase">MO:</span>
-            <span className="font-semibold">{currency}{totalMonth.toFixed(0)}</span>
+            <span className="text-[10px] text-gray-600 uppercase font-medium">Month:</span>
+            <span className="font-bold text-gray-900">{currency}{totalMonth.toFixed(0)}</span>
           </button>
 
           {/* Cloud Sync Button */}
           <button
             onClick={() => handleClick(onOpenAuth)}
-            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono transition-all ${
+            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-full border text-xs font-semibold shadow-sm transition-all ${
               currentUser
-                ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25'
-                : 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/25 shadow-sm'
+                ? 'bg-emerald-500/20 border-emerald-700/25 text-emerald-900 hover:bg-emerald-500/30'
+                : 'bg-white/35 hover:bg-white/55 border-white/45 text-gray-900'
             }`}
             title={currentUser ? `Synced: ${currentUser.email}` : "Connect Cloud Sync (Phone + Laptop)"}
           >
             <span className="relative flex h-2 w-2">
-              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${currentUser ? 'bg-emerald-400' : 'bg-cyan-400'}`} />
-              <span className={`relative inline-flex rounded-full h-2 w-2 ${currentUser ? 'bg-emerald-500' : 'bg-cyan-500'}`} />
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${currentUser ? 'bg-emerald-500' : 'bg-amber-400'}`} />
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${currentUser ? 'bg-emerald-600' : 'bg-amber-500'}`} />
             </span>
-            <span className="text-[11px] font-semibold">{currentUser ? 'SYNCED' : 'SYNC'}</span>
+            <span className="text-[11px] font-bold">{currentUser ? 'Synced' : 'Sync'}</span>
           </button>
 
           {/* Install to Home Screen Button */}
           {!isPwaInstalled && (
             <button
               onClick={() => handleClick(onOpenInstall)}
-              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500/20 to-violet-500/20 border border-cyan-400/40 text-cyan-300 text-xs font-medium hover:brightness-125 transition-all shadow-sm"
+              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-full bg-white/35 hover:bg-white/55 border border-white/45 text-gray-900 text-xs font-semibold shadow-sm transition-all"
               title="Add to Home Screen"
             >
-              <Download className="w-3.5 h-3.5 text-cyan-400" />
+              <Download className="w-3.5 h-3.5 text-gray-800" />
               <span className="hidden xs:inline">App</span>
             </button>
           )}
@@ -130,8 +129,8 @@ export function Header({
           {/* Analytics Modal Button */}
           <button
             onClick={() => handleClick(onOpenAnalytics)}
-            className="p-2 rounded-lg bg-space-850/80 border border-slate-700/60 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 transition-colors"
-            title="Spending Telemetry"
+            className="p-2 rounded-xl bg-white/35 hover:bg-white/55 border border-white/45 text-gray-800 hover:text-black shadow-sm transition-all"
+            title="Spending Analytics"
           >
             <BarChart3 className="w-4 h-4" />
           </button>
@@ -139,8 +138,8 @@ export function Header({
           {/* Settings Modal Button */}
           <button
             onClick={() => handleClick(onOpenSettings)}
-            className="p-2 rounded-lg bg-space-850/80 border border-slate-700/60 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/40 transition-colors"
-            title="Settings & AI Config"
+            className="p-2 rounded-xl bg-white/35 hover:bg-white/55 border border-white/45 text-gray-800 hover:text-black shadow-sm transition-all"
+            title="Settings"
           >
             <Settings className="w-4 h-4" />
           </button>

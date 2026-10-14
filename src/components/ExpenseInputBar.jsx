@@ -143,14 +143,14 @@ export function ExpenseInputBar({
         
         {/* Recent Logged Confirmation Toast */}
         {recentLogged && (
-          <div className="mb-2 p-2.5 rounded-xl glass-panel glow-border-emerald bg-emerald-950/40 flex items-center justify-between text-xs animate-in fade-in slide-in-from-bottom duration-300">
+          <div className="mb-2 p-3 rounded-2xl bg-white/70 backdrop-blur-xl border border-white/60 shadow-lg flex items-center justify-between text-xs animate-in fade-in slide-in-from-bottom duration-300">
             <div className="flex items-center space-x-2 truncate">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <div className="truncate">
-                <span className="font-mono font-bold text-emerald-300">{currency}{recentLogged.amount.toFixed(2)}</span>
-                <span className="text-slate-300 mx-1.5">•</span>
-                <span className="text-slate-200">{recentLogged.category}</span>
-                <span className="text-slate-400 mx-1 text-[11px]">({recentLogged.payee})</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+              <div className="truncate text-gray-900">
+                <span className="font-extrabold text-gray-900">{currency}{recentLogged.amount.toFixed(2)}</span>
+                <span className="text-gray-400 mx-1.5">•</span>
+                <span className="font-semibold text-gray-800">{recentLogged.category}</span>
+                <span className="text-gray-600 mx-1 text-xs">({recentLogged.payee})</span>
               </div>
             </div>
             <button
@@ -158,7 +158,7 @@ export function ExpenseInputBar({
                 onEditRecent(recentLogged);
                 setRecentLogged(null);
               }}
-              className="flex items-center space-x-1 px-2 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-mono hover:bg-emerald-500/30 shrink-0 ml-2"
+              className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-gray-900 text-white font-medium text-xs hover:bg-black transition-all shrink-0 ml-2 shadow-xs"
             >
               <Edit3 className="w-3 h-3" />
               <span>Edit</span>
@@ -168,22 +168,22 @@ export function ExpenseInputBar({
 
         {/* Live Speech Recognition Waveform / Interim Banner */}
         {isListening && (
-          <div className="mb-2 p-2.5 rounded-xl glass-panel glow-border-cyan bg-cyan-950/40 flex items-center justify-between space-x-3 text-xs animate-pulse">
+          <div className="mb-2 p-3 rounded-2xl bg-white/70 backdrop-blur-xl border border-white/60 shadow-lg flex items-center justify-between space-x-3 text-xs animate-pulse">
             <div className="flex items-center space-x-2 truncate">
               <div className="flex items-center space-x-1 h-5 px-1">
-                <div className="w-1 bg-cyan-400 rounded-full sound-wave-bar" />
-                <div className="w-1 bg-cyan-400 rounded-full sound-wave-bar" />
-                <div className="w-1 bg-cyan-400 rounded-full sound-wave-bar" />
-                <div className="w-1 bg-cyan-400 rounded-full sound-wave-bar" />
-                <div className="w-1 bg-cyan-400 rounded-full sound-wave-bar" />
+                <div className="w-1 bg-amber-500 rounded-full sound-wave-bar" />
+                <div className="w-1 bg-amber-500 rounded-full sound-wave-bar" />
+                <div className="w-1 bg-amber-500 rounded-full sound-wave-bar" />
+                <div className="w-1 bg-amber-500 rounded-full sound-wave-bar" />
+                <div className="w-1 bg-amber-500 rounded-full sound-wave-bar" />
               </div>
-              <span className="text-cyan-200 font-mono italic truncate">
+              <span className="text-gray-900 font-medium italic truncate">
                 {interimText || 'Listening...'}
               </span>
             </div>
             <button
               onClick={handleVoiceToggle}
-              className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-mono border border-cyan-500/40 uppercase"
+              className="px-2.5 py-1 rounded-lg bg-gray-900 text-white text-xs font-semibold uppercase tracking-wider"
             >
               Cancel
             </button>
@@ -192,52 +192,52 @@ export function ExpenseInputBar({
 
         {/* Error / Status message */}
         {statusMessage && !isListening && (
-          <div className="mb-2 p-2 rounded-xl glass-panel border-amber-500/40 bg-amber-950/40 flex items-center space-x-2 text-xs text-amber-300">
-            <AlertCircle className="w-4 h-4 shrink-0 text-amber-400" />
-            <span className="font-mono text-[11px]">{statusMessage}</span>
+          <div className="mb-2 p-2.5 rounded-2xl bg-white/75 backdrop-blur-xl border border-amber-500/40 shadow-md flex items-center space-x-2 text-xs text-amber-900">
+            <AlertCircle className="w-4 h-4 shrink-0 text-amber-600" />
+            <span className="text-xs font-medium">{statusMessage}</span>
           </div>
         )}
 
         {/* Quick Suggestion Chips (horizontal scroll on mobile) */}
         <div className="flex items-center space-x-1.5 overflow-x-auto pb-1.5 mb-1.5 scrollbar-none no-scrollbar">
-          <span className="text-[10px] font-mono uppercase text-slate-500 px-1 shrink-0 flex items-center">
-            Presets:
+          <span className="text-[10px] font-bold uppercase text-gray-700 px-1 shrink-0 flex items-center tracking-wider">
+            Quick:
           </span>
           {QUICK_CHIPS.map((chip, idx) => (
             <button
               key={idx}
               onClick={() => handleChipClick(chip)}
-              className="text-[11px] font-mono px-2.5 py-1 rounded-full glass-panel hover:border-cyan-400/40 text-slate-300 hover:text-cyan-300 whitespace-nowrap shrink-0 transition-all flex items-center space-x-1 active:scale-95"
+              className="text-xs font-semibold px-3 py-1 rounded-full bg-white/35 hover:bg-white/55 border border-white/45 text-gray-800 hover:text-black whitespace-nowrap shrink-0 transition-all flex items-center space-x-1 active:scale-95 shadow-xs"
             >
               <span>{chip}</span>
-              <ArrowUpRight className="w-3 h-3 text-cyan-400/60" />
+              <ArrowUpRight className="w-3 h-3 text-gray-600" />
             </button>
           ))}
         </div>
 
         {/* Main Floating Input Station */}
-        <div className="glass-panel rounded-2xl p-1.5 flex items-center space-x-2 border-cyan-500/25 shadow-2xl relative bg-space-900/90 backdrop-blur-xl">
+        <div className="bg-white/50 backdrop-blur-xl border border-white/50 rounded-2xl p-2 flex items-center space-x-2 shadow-2xl relative">
           
           {/* Voice Mic Button */}
           <button
             type="button"
             onClick={handleVoiceToggle}
-            className={`relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200 shrink-0 ${
+            className={`relative flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-200 shrink-0 shadow-sm ${
               isListening 
-                ? 'bg-rose-500 text-white shadow-[0_0_20px_#F43F5E] animate-pulse' 
-                : 'bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-400/40 text-cyan-300 hover:border-cyan-300 hover:shadow-neon-cyan active:scale-90'
+                ? 'bg-red-600 text-white shadow-lg animate-pulse' 
+                : 'bg-white/60 hover:bg-white/85 border border-white/60 text-gray-800 active:scale-90'
             }`}
             title={speechAvailable ? "Hands-Free Voice Dictation" : "Voice recording"}
           >
             {isListening ? (
               <MicOff className="w-5 h-5 text-white" />
             ) : (
-              <Mic className="w-5 h-5 text-cyan-300" />
+              <Mic className="w-5 h-5 text-gray-800" />
             )}
             
-            {/* Pulsating Radar Rings when listening */}
+            {/* Pulsating Ring when listening */}
             {isListening && (
-              <span className="absolute inset-0 rounded-xl border-2 border-rose-400 animate-ping opacity-75 pointer-events-none" />
+              <span className="absolute inset-0 rounded-xl border-2 border-red-500 animate-ping opacity-75 pointer-events-none" />
             )}
           </button>
 
@@ -256,7 +256,7 @@ export function ExpenseInputBar({
               }}
               disabled={isProcessing}
               placeholder="Type e.g. 'Paid 150 for office supplies'..."
-              className="w-full bg-space-950/60 border border-slate-700/50 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400/70 focus:ring-1 focus:ring-cyan-400/30 transition-all font-sans"
+              className="w-full bg-white/60 focus:bg-white/85 border border-white/50 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all font-sans"
             />
           </div>
 
@@ -265,17 +265,17 @@ export function ExpenseInputBar({
             type="button"
             onClick={() => handleSubmit()}
             disabled={isProcessing || (!inputText.trim() && !isListening)}
-            className={`flex items-center justify-center w-11 h-11 rounded-xl font-medium transition-all duration-200 shrink-0 ${
+            className={`flex items-center justify-center w-11 h-11 rounded-xl font-medium transition-all duration-200 shrink-0 shadow-md ${
               inputText.trim()
-                ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-neon-cyan hover:brightness-110 active:scale-90'
-                : 'bg-space-800 text-slate-600 border border-slate-800 cursor-not-allowed'
+                ? 'bg-gray-900 text-white hover:bg-black active:scale-90'
+                : 'bg-gray-400/40 text-gray-500 border border-transparent cursor-not-allowed'
             }`}
-            title="Log Expense with AI"
+            title="Log Expense"
           >
             {isProcessing ? (
-              <Loader2 className="w-5 h-5 animate-spin text-cyan-300" />
+              <Loader2 className="w-5 h-5 animate-spin text-white" />
             ) : (
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-white" />
             )}
           </button>
 
