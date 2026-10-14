@@ -198,23 +198,6 @@ export function ExpenseInputBar({
           </div>
         )}
 
-        {/* Quick Suggestion Chips (horizontal scroll on mobile) */}
-        <div className="flex items-center space-x-1.5 overflow-x-auto pb-1.5 mb-1.5 scrollbar-none no-scrollbar">
-          <span className="text-[10px] font-bold uppercase text-gray-700 px-1 shrink-0 flex items-center tracking-wider">
-            Quick:
-          </span>
-          {QUICK_CHIPS.map((chip, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleChipClick(chip)}
-              className="text-xs font-semibold px-3 py-1 rounded-full bg-white/35 hover:bg-white/55 border border-white/45 text-gray-800 hover:text-black whitespace-nowrap shrink-0 transition-all flex items-center space-x-1 active:scale-95 shadow-xs"
-            >
-              <span>{chip}</span>
-              <ArrowUpRight className="w-3 h-3 text-gray-600" />
-            </button>
-          ))}
-        </div>
-
         {/* Main Floating Input Station */}
         <div className="bg-white/50 backdrop-blur-xl border border-white/50 rounded-2xl p-2 flex items-center space-x-2 shadow-2xl relative">
           
