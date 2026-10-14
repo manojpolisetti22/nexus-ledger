@@ -11,7 +11,7 @@ import { loadCategories, loadLearnedRules } from './storage.js';
 export async function parseExpensePrompt(
   text, 
   apiKey = '', 
-  preferredModel = 'gemini-2.5-flash',
+  preferredModel = 'gemini-1.5-flash',
   customCategories = null,
   learnedRules = null
 ) {
@@ -30,7 +30,7 @@ export async function parseExpensePrompt(
       if (geminiResult && geminiResult.amount) {
         return {
           ...geminiResult,
-          engine: 'Gemini 2.5 Flash (Adaptive Cloud AI)',
+          engine: 'Gemini Flash (Adaptive Cloud AI)',
           rawInput: cleanText
         };
       }
@@ -51,7 +51,7 @@ export async function parseExpensePrompt(
 /**
  * Gemini Flash API Call with Dynamic Categories & Few-Shot Learned Context
  */
-async function parseWithGemini(text, apiKey, model = 'gemini-2.5-flash', categories = CATEGORIES, learnedRules = []) {
+async function parseWithGemini(text, apiKey, model = 'gemini-1.5-flash', categories = CATEGORIES, learnedRules = []) {
   const today = new Date().toISOString().split('T')[0];
   const dayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
@@ -75,7 +75,12 @@ Extract structured JSON with EXACTLY these fields:
 - paymentMethod: string (one of: "Company Card", "Personal Card", "Cash", "Bank Transfer (ACH)", "Digital Wallet (Apple/Google Pay)")
 - notes: string (items purchased, details, or meeting purpose)${learnedContext}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  let targetModel = model;
+  if (!targetModel || targetModel.includes('2.5')) {
+    targetModel = 'gemini-1.5-flash';
+  }
+
+  let url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
 
   const payload = {
     contents: [
@@ -92,11 +97,21 @@ Extract structured JSON with EXACTLY these fields:
     }
   };
 
-  const response = await fetch(url, {
+  let response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
+
+  // If 404 model not found, try resilient fallback to gemini-1.5-flash
+  if (response.status === 404 && targetModel !== 'gemini-1.5-flash') {
+    url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }
 
   if (!response.ok) {
     const errorBody = await response.text();

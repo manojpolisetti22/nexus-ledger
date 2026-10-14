@@ -58,7 +58,12 @@ export function loadSettings() {
       currency = '₹';
     }
 
-    return { ...DEFAULT_SETTINGS, ...parsed, currency };
+    let aiModel = parsed.aiModel;
+    if (!aiModel || aiModel.includes('2.5')) {
+      aiModel = 'gemini-1.5-flash';
+    }
+
+    return { ...DEFAULT_SETTINGS, ...parsed, currency, aiModel };
   } catch (err) {
     return DEFAULT_SETTINGS;
   }

@@ -58,11 +58,17 @@ export function SettingsModal({
       return;
     }
     setIsTesting(true);
-    setTestStatus('Validating Gemini quantum vector...');
+    setTestStatus('Validating Gemini connection...');
+
+    let chosenModel = formData.aiModel;
+    if (!chosenModel || chosenModel.includes('2.5')) {
+      chosenModel = 'gemini-1.5-flash';
+      handleChange('aiModel', 'gemini-1.5-flash');
+    }
 
     try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${formData.aiModel}:generateContent?key=${formData.apiKey.trim()}`;
-      const res = await fetch(url, {
+      let url = `https://generativelanguage.googleapis.com/v1beta/models/${chosenModel}:generateContent?key=${formData.apiKey.trim()}`;
+      let res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -71,8 +77,23 @@ export function SettingsModal({
         })
       });
 
+      // If chosen model returned 404, fallback to universal gemini-1.5-flash
+      if (res.status === 404 && chosenModel !== 'gemini-1.5-flash') {
+        chosenModel = 'gemini-1.5-flash';
+        handleChange('aiModel', 'gemini-1.5-flash');
+        url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${formData.apiKey.trim()}`;
+        res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: 'Respond with valid JSON: {"status": "ok"}' }] }],
+            generationConfig: { responseMimeType: 'application/json' }
+          })
+        });
+      }
+
       if (res.ok) {
-        setTestStatus('Success! Gemini API connected and ready.');
+        setTestStatus(`Success! Gemini API connected (${chosenModel}).`);
         playCyberBeep(soundEnabled);
         triggerHaptic([20, 40], hapticsEnabled);
       } else {
@@ -187,12 +208,12 @@ export function SettingsModal({
                 AI Model Tier
               </label>
               <select
-                value={formData.aiModel}
+                value={formData.aiModel === 'gemini-2.5-flash' ? 'gemini-1.5-flash' : formData.aiModel}
                 onChange={(e) => handleChange('aiModel', e.target.value)}
                 className="w-full bg-white/70 border border-white/60 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
               >
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fastest & Recommended)</option>
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Universal Free Tier - Recommended)</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Next-Gen Fast)</option>
                 <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Reasoning)</option>
               </select>
             </div>
