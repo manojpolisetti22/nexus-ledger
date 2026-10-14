@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Filter, X, ArrowUpDown } from 'lucide-react';
+import { Search, Filter, X, ArrowUpDown, Plus, Settings2, SlidersHorizontal } from 'lucide-react';
 import { CATEGORIES } from '../types';
 import { playLaserClick } from '../utils/sound';
 import { triggerHaptic } from '../utils/haptics';
@@ -11,6 +11,8 @@ export function FilterBar({
   onCategoryChange,
   sortBy,
   onSortChange,
+  categories = CATEGORIES,
+  onOpenCategories,
   soundEnabled = true,
   hapticsEnabled = true
 }) {
@@ -45,8 +47,8 @@ export function FilterBar({
             className="bg-space-900/80 border border-slate-800 rounded-xl px-2.5 py-2 text-[11px] font-mono text-slate-300 focus:outline-none focus:border-cyan-500/60 cursor-pointer"
           >
             <option value="newest">Newest First</option>
-            <option value="highest">Highest $</option>
-            <option value="lowest">Lowest $</option>
+            <option value="highest">Highest Amount</option>
+            <option value="lowest">Lowest Amount</option>
             <option value="oldest">Oldest First</option>
           </select>
         </div>
@@ -54,6 +56,22 @@ export function FilterBar({
 
       {/* Category Pills (horizontal scroll on mobile) */}
       <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar">
+        {/* Manage Categories Button */}
+        {onOpenCategories && (
+          <button
+            onClick={() => {
+              playLaserClick(soundEnabled);
+              triggerHaptic(10, hapticsEnabled);
+              onOpenCategories();
+            }}
+            className="text-[11px] font-mono px-2.5 py-1 rounded-full whitespace-nowrap transition-all border shrink-0 flex items-center space-x-1 bg-cyan-500/10 border-cyan-500/30 text-cyan-300 hover:border-cyan-400/60 hover:bg-cyan-500/20"
+            title="Edit, Add or Remove Categories"
+          >
+            <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
+            <span>Categories</span>
+          </button>
+        )}
+
         <button
           onClick={() => {
             playLaserClick(soundEnabled);
@@ -69,7 +87,7 @@ export function FilterBar({
           All
         </button>
 
-        {CATEGORIES.map((cat) => {
+        {categories.map((cat) => {
           const isSelected = selectedCategory === cat.name;
           return (
             <button

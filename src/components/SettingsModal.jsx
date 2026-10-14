@@ -15,7 +15,8 @@ import {
   ExternalLink,
   ShieldAlert,
   Sparkles,
-  Info
+  Info,
+  SlidersHorizontal
 } from 'lucide-react';
 import { exportToCSV, exportBackup } from '../utils/storage';
 import { INITIAL_EXPENSES } from '../types';
@@ -23,13 +24,8 @@ import { playLaserClick, playCyberBeep } from '../utils/sound';
 import { triggerHaptic } from '../utils/haptics';
 
 const CURRENCIES = [
-  { symbol: '$', label: 'USD / CAD / AUD ($)' },
-  { symbol: '€', label: 'EUR (€)' },
-  { symbol: '£', label: 'GBP (£)' },
   { symbol: '₹', label: 'INR (₹)' },
-  { symbol: '¥', label: 'JPY / CNY (¥)' },
-  { symbol: 'CHF', label: 'Swiss Franc (CHF)' },
-  { symbol: 'AED', label: 'UAE Dirham (AED)' },
+  { symbol: '$', label: 'USD ($)' },
 ];
 
 export function SettingsModal({
@@ -40,6 +36,7 @@ export function SettingsModal({
   expenses,
   onResetExpenses,
   onRestoreExpenses,
+  onOpenCategories,
   soundEnabled,
   hapticsEnabled
 }) {
@@ -222,6 +219,31 @@ export function SettingsModal({
                 ))}
               </select>
             </div>
+
+            {/* Category Taxonomy & AI Memory Button */}
+            {onOpenCategories && (
+              <div className="flex items-center justify-between p-3 rounded-xl bg-cyan-950/20 border border-cyan-500/30">
+                <div className="flex items-center space-x-2.5">
+                  <SlidersHorizontal className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <div>
+                    <div className="text-xs font-semibold text-slate-200">Category & AI Memory Taxonomy</div>
+                    <div className="text-[10px] text-slate-400">Add, edit, remove categories & inspect learned rules</div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    playLaserClick(soundEnabled);
+                    triggerHaptic(15, hapticsEnabled);
+                    onClose();
+                    onOpenCategories();
+                  }}
+                  className="px-3 py-1.5 text-xs font-mono font-medium text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/40 rounded-lg transition-colors shrink-0"
+                >
+                  Manage
+                </button>
+              </div>
+            )}
 
             {/* Audio Toggle */}
             <div className="flex items-center justify-between p-3 rounded-xl bg-space-950/60 border border-slate-800">

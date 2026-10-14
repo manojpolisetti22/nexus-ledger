@@ -13,7 +13,8 @@ export function AnalyticsModal({
   isOpen, 
   onClose, 
   expenses, 
-  currency = '$',
+  categories = CATEGORIES,
+  currency = '₹',
   soundEnabled = true,
   hapticsEnabled = true
 }) {
@@ -22,12 +23,12 @@ export function AnalyticsModal({
   const totalAmount = expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
   const avgAmount = expenses.length > 0 ? (totalAmount / expenses.length) : 0;
 
-  // Compute breakdown by category
-  const categoryTotals = CATEGORIES.map(cat => {
+  // Compute breakdown by category dynamically
+  const categoryTotals = categories.map(cat => {
     const sum = expenses
-      .filter(e => e.category.toLowerCase() === cat.name.toLowerCase())
+      .filter(e => (e.category || '').toLowerCase() === cat.name.toLowerCase())
       .reduce((s, e) => s + (Number(e.amount) || 0), 0);
-    const count = expenses.filter(e => e.category.toLowerCase() === cat.name.toLowerCase()).length;
+    const count = expenses.filter(e => (e.category || '').toLowerCase() === cat.name.toLowerCase()).length;
     const percent = totalAmount > 0 ? Math.round((sum / totalAmount) * 100) : 0;
     return { ...cat, sum, count, percent };
   }).filter(c => c.count > 0).sort((a, b) => b.sum - a.sum);

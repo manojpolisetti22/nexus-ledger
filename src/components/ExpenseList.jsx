@@ -22,6 +22,16 @@ import { playLaserClick } from '../utils/sound';
 import { triggerHaptic } from '../utils/haptics';
 
 // Map icon strings to Lucide components
+import { 
+  Coffee, 
+  ShoppingBag, 
+  Heart, 
+  Plane, 
+  Home, 
+  Film, 
+  Dumbbell 
+} from 'lucide-react';
+
 const ICON_MAP = {
   Briefcase,
   Utensils,
@@ -30,13 +40,21 @@ const ICON_MAP = {
   Zap,
   Megaphone,
   Shield,
-  Tag
+  Tag,
+  Coffee,
+  ShoppingBag,
+  Heart,
+  Plane,
+  Home,
+  Film,
+  Dumbbell
 };
 
 export function ExpenseList({ 
   expenses, 
   onSelectExpense, 
-  currency = '$',
+  categories = CATEGORIES,
+  currency = '₹',
   soundEnabled = true,
   hapticsEnabled = true,
   searchQuery = '',
@@ -79,8 +97,8 @@ export function ExpenseList({
   });
 
   const getCategoryMeta = (catName) => {
-    const found = CATEGORIES.find(c => c.name.toLowerCase() === (catName || '').toLowerCase());
-    return found || CATEGORIES[7]; // Default to Misc
+    const found = categories.find(c => c.name.toLowerCase() === (catName || '').toLowerCase());
+    return found || { id: 'misc', name: catName || 'Miscellaneous', color: '#94A3B8', icon: 'Tag', bg: 'rgba(148, 163, 184, 0.12)', border: 'rgba(148, 163, 184, 0.3)' };
   };
 
   const renderGroup = (title, items, count, total) => {

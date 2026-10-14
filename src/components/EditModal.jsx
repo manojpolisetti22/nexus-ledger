@@ -23,7 +23,9 @@ export function EditModal({
   onClose, 
   onSave, 
   onDelete, 
-  currency = '$',
+  categories = CATEGORIES,
+  onCategoryLearned,
+  currency = '₹',
   soundEnabled = true,
   hapticsEnabled = true
 }) {
@@ -56,10 +58,19 @@ export function EditModal({
     playCyberBeep(soundEnabled);
     triggerHaptic([20, 40], hapticsEnabled);
 
-    onSave({
+    const updated = {
       ...formData,
       amount: parseFloat(formData.amount) || 0
-    });
+    };
+
+    // Trigger adaptive learning if category was updated
+    if (expense && expense.category && formData.category && expense.category.toLowerCase() !== formData.category.toLowerCase()) {
+      if (onCategoryLearned) {
+        onCategoryLearned(formData.payee, formData.category, formData.rawInput || expense.rawInput || '');
+      }
+    }
+
+    onSave(updated);
     onClose();
   };
 
@@ -145,7 +156,7 @@ export function EditModal({
               <span>Category Allocation</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-              {CATEGORIES.map((cat) => {
+              {categories.map((cat) => {
                 const isSelected = formData.category.toLowerCase() === cat.name.toLowerCase();
                 return (
                   <button

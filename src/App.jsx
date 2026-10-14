@@ -8,7 +8,19 @@ import { EditModal } from './components/EditModal';
 import { AnalyticsModal } from './components/AnalyticsModal';
 import { SettingsModal } from './components/SettingsModal';
 import { InstallPwaModal } from './components/InstallPwaModal';
-import { loadExpenses, saveExpenses, loadSettings, saveSettings } from './utils/storage';
+import { CategoriesModal } from './components/CategoriesModal';
+import { 
+  loadExpenses, 
+  saveExpenses, 
+  loadSettings, 
+  saveSettings,
+  loadCategories,
+  saveCategories,
+  loadLearnedRules,
+  learnCategoryMapping,
+  removeLearnedRule,
+  clearAllLearnedRules
+} from './utils/storage';
 import { parseExpensePrompt } from './utils/aiParser';
 import { 
   supabase, 
@@ -23,6 +35,8 @@ import { AuthSyncModal } from './components/AuthSyncModal';
 export function App() {
   const [expenses, setExpenses] = useState(() => loadExpenses());
   const [settings, setSettings] = useState(() => loadSettings());
+  const [categories, setCategories] = useState(() => loadCategories());
+  const [learnedRules, setLearnedRules] = useState(() => loadLearnedRules());
   
   // Auth & Cloud Sync State
   const [currentUser, setCurrentUser] = useState(null);
@@ -32,6 +46,7 @@ export function App() {
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isInstallOpen, setIsInstallOpen] = useState(false);
 
   // Filter & Search States
@@ -52,6 +67,10 @@ export function App() {
   useEffect(() => {
     saveSettings(settings);
   }, [settings]);
+
+  useEffect(() => {
+    saveCategories(categories);
+  }, [categories]);
 
   // Check Supabase Auth session on mount and listen to changes
   useEffect(() => {
@@ -158,7 +177,9 @@ export function App() {
     const parsed = await parseExpensePrompt(
       naturalLanguageText, 
       settings.apiKey, 
-      settings.aiModel
+      settings.aiModel,
+      categories,
+      learnedRules
     );
 
     const newExpense = {
@@ -311,6 +332,8 @@ export function App() {
           onCategoryChange={setSelectedCategory}
           sortBy={sortBy}
           onSortChange={setSortBy}
+          categories={categories}
+          onOpenCategories={() => setIsCategoriesOpen(true)}
           soundEnabled={settings.soundEnabled}
           hapticsEnabled={settings.hapticsEnabled}
         />
@@ -320,6 +343,7 @@ export function App() {
           expenses={filteredExpenses}
           onSelectExpense={(expense) => setSelectedExpense(expense)}
           currency={settings.currency}
+          categories={categories}
           soundEnabled={settings.soundEnabled}
           hapticsEnabled={settings.hapticsEnabled}
           searchQuery={searchQuery}
@@ -344,6 +368,11 @@ export function App() {
         onClose={() => setSelectedExpense(null)}
         onSave={handleSaveEditedExpense}
         onDelete={handleDeleteExpense}
+        categories={categories}
+        onCategoryLearned={(payee, newCat, rawInput) => {
+          const updated = learnCategoryMapping(payee, newCat, rawInput);
+          setLearnedRules(updated);
+        }}
         currency={settings.currency}
         soundEnabled={settings.soundEnabled}
         hapticsEnabled={settings.hapticsEnabled}
@@ -354,6 +383,7 @@ export function App() {
         isOpen={isAnalyticsOpen}
         onClose={() => setIsAnalyticsOpen(false)}
         expenses={expenses}
+        categories={categories}
         currency={settings.currency}
         soundEnabled={settings.soundEnabled}
         hapticsEnabled={settings.hapticsEnabled}
@@ -363,11 +393,33 @@ export function App() {
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+        onOpenCategories={() => setIsCategoriesOpen(true)}
         settings={settings}
         onSaveSettings={(newSettings) => setSettings(newSettings)}
         expenses={expenses}
         onResetExpenses={(newExpenses) => setExpenses(newExpenses)}
         onRestoreExpenses={(restored) => setExpenses(restored)}
+        soundEnabled={settings.soundEnabled}
+        hapticsEnabled={settings.hapticsEnabled}
+      />
+
+      {/* Category Management & AI Taxonomy Modal */}
+      <CategoriesModal
+        isOpen={isCategoriesOpen}
+        onClose={() => setIsCategoriesOpen(false)}
+        categories={categories}
+        onSaveCategories={setCategories}
+        expenses={expenses}
+        onUpdateExpenses={setExpenses}
+        learnedRules={learnedRules}
+        onDeleteLearnedRule={(ruleId) => {
+          const updated = removeLearnedRule(ruleId);
+          setLearnedRules(updated);
+        }}
+        onClearLearnedRules={() => {
+          clearAllLearnedRules();
+          setLearnedRules([]);
+        }}
         soundEnabled={settings.soundEnabled}
         hapticsEnabled={settings.hapticsEnabled}
       />
