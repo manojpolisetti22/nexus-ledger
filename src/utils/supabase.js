@@ -18,9 +18,13 @@ export const supabase = isSupabaseConfigured
 // Auth helper functions
 export async function signUpWithEmail(email, password) {
   if (!supabase) throw new Error('Supabase client is not configured');
+  const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}` : undefined;
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: redirectUrl,
+    },
   });
   if (error) throw error;
   return data;
