@@ -1,0 +1,43 @@
+{
+  "short_name": "NexusPay",
+  "name": "Nexus // Quantum Expense Ledger",
+  "description": "On-the-go natural language & voice expense tracker with instant AI extraction",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#030712",
+  "theme_color": "#070C18",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["finance", "productivity", "business"],
+  "shortcuts": [
+    {
+      "name": "Log Expense",
+      "url": "/?action=log",
+      "description": "Instant voice/text expense capture"
+    },
+    {
+      "name": "Review Ledger",
+      "url": "/?action=ledger",
+      "description": "View and edit logged expenses"
+    }
+  ]
+}
