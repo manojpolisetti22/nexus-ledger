@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexus-expense-v5';
+const CACHE_NAME = 'nexus-expense-v6';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

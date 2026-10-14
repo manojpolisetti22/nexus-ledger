@@ -20,7 +20,7 @@ export const PAYMENT_METHODS = [
 export const DEFAULT_SETTINGS = {
   currency: '₹',
   apiKey: '',
-  aiModel: 'gemini-1.5-flash',
+  aiModel: 'gemini-3.8-flash',
   soundEnabled: true,
   hapticsEnabled: true,
   autoConfirmSeconds: 4,

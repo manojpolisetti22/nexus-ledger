@@ -46,8 +46,8 @@ export function SettingsModal({
 
   useEffect(() => {
     let aiModel = settings.aiModel;
-    if (!aiModel || aiModel.includes('2.5')) {
-      aiModel = 'gemini-1.5-flash';
+    if (!aiModel || aiModel.includes('2.5') || aiModel.includes('1.5')) {
+      aiModel = 'gemini-3.8-flash';
     }
     setFormData(prev => ({ ...prev, ...settings, aiModel }));
   }, [isOpen, settings]);
@@ -93,9 +93,11 @@ export function SettingsModal({
       const models = listData.models || [];
       const modelNames = models.map(m => (m.name || '').replace('models/', ''));
 
-      // Find best available model: prefer gemini-1.5-flash, gemini-2.0-flash, or first flash model
-      let targetModel = 'gemini-1.5-flash';
-      if (modelNames.includes('gemini-1.5-flash')) {
+      // Find best available model: prefer gemini-3.8-flash, or first flash model
+      let targetModel = 'gemini-3.8-flash';
+      if (modelNames.includes('gemini-3.8-flash')) {
+        targetModel = 'gemini-3.8-flash';
+      } else if (modelNames.includes('gemini-1.5-flash')) {
         targetModel = 'gemini-1.5-flash';
       } else if (modelNames.includes('gemini-2.0-flash')) {
         targetModel = 'gemini-2.0-flash';
@@ -234,12 +236,12 @@ export function SettingsModal({
                 AI Model Tier
               </label>
               <select
-                value={formData.aiModel === 'gemini-2.5-flash' ? 'gemini-1.5-flash' : formData.aiModel}
+                value={formData.aiModel?.includes('2.5') ? 'gemini-3.8-flash' : (formData.aiModel || 'gemini-3.8-flash')}
                 onChange={(e) => handleChange('aiModel', e.target.value)}
                 className="w-full bg-white/70 border border-white/60 rounded-xl px-3.5 py-2 text-xs font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
               >
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Universal Free Tier - Recommended)</option>
-                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Next-Gen Fast)</option>
+                <option value="gemini-3.8-flash">Gemini 3.8 Flash (Flagship Fast & Free - Recommended)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
                 <option value="gemini-1.5-pro">Gemini 1.5 Pro (Deep Reasoning)</option>
               </select>
             </div>

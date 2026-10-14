@@ -59,8 +59,8 @@ export function loadSettings() {
     }
 
     let aiModel = parsed.aiModel;
-    if (!aiModel || aiModel.includes('2.5')) {
-      aiModel = 'gemini-1.5-flash';
+    if (!aiModel || aiModel.includes('2.5') || aiModel.includes('1.5')) {
+      aiModel = 'gemini-3.8-flash';
     }
 
     return { ...DEFAULT_SETTINGS, ...parsed, currency, aiModel };
