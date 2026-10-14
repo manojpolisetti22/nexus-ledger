@@ -15,6 +15,8 @@ export function Header({
   onOpenSettings, 
   onOpenAnalytics, 
   onOpenInstall, 
+  onOpenAuth,
+  currentUser,
   isPwaInstalled, 
   soundEnabled, 
   hapticsEnabled,
@@ -47,7 +49,7 @@ export function Header({
   const handleClick = (callback) => {
     playLaserClick(soundEnabled);
     triggerHaptic(12, hapticsEnabled);
-    callback();
+    if (callback) callback();
   };
 
   return (
@@ -71,8 +73,12 @@ export function Header({
             </div>
             <div className="flex items-center space-x-2 text-[10px] text-slate-400 font-mono">
               <span className="flex items-center space-x-1">
-                <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-400 shadow-[0_0_8px_#10B981]' : 'bg-rose-400'}`} />
-                <span>{isOnline ? 'SYNCED' : 'OFFLINE'}</span>
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  currentUser 
+                    ? 'bg-emerald-400 shadow-[0_0_8px_#10B981]' 
+                    : isOnline ? 'bg-cyan-400 shadow-[0_0_8px_#06B6D4]' : 'bg-rose-400'
+                }`} />
+                <span>{currentUser ? 'CLOUD SYNC' : (isOnline ? 'LOCAL' : 'OFFLINE')}</span>
               </span>
               <span>•</span>
               <span>{time}</span>
@@ -81,7 +87,7 @@ export function Header({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5 sm:space-x-2">
           {/* Quick Month Pill */}
           <button 
             onClick={() => handleClick(onOpenAnalytics)}
@@ -90,6 +96,23 @@ export function Header({
           >
             <span className="text-[10px] text-slate-400 uppercase">MO:</span>
             <span className="font-semibold">{currency}{totalMonth.toFixed(0)}</span>
+          </button>
+
+          {/* Cloud Sync Button */}
+          <button
+            onClick={() => handleClick(onOpenAuth)}
+            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono transition-all ${
+              currentUser
+                ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25'
+                : 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/25 shadow-sm'
+            }`}
+            title={currentUser ? `Synced: ${currentUser.email}` : "Connect Cloud Sync (Phone + Laptop)"}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${currentUser ? 'bg-emerald-400' : 'bg-cyan-400'}`} />
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${currentUser ? 'bg-emerald-500' : 'bg-cyan-500'}`} />
+            </span>
+            <span className="text-[11px] font-semibold">{currentUser ? 'SYNCED' : 'SYNC'}</span>
           </button>
 
           {/* Install to Home Screen Button */}

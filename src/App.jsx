@@ -10,11 +10,24 @@ import { SettingsModal } from './components/SettingsModal';
 import { InstallPwaModal } from './components/InstallPwaModal';
 import { loadExpenses, saveExpenses, loadSettings, saveSettings } from './utils/storage';
 import { parseExpensePrompt } from './utils/aiParser';
+import { 
+  supabase, 
+  fetchCloudExpenses, 
+  insertCloudExpense, 
+  updateCloudExpense, 
+  deleteCloudExpense, 
+  formatExpenseFromDB 
+} from './utils/supabase';
+import { AuthSyncModal } from './components/AuthSyncModal';
 
 export function App() {
   const [expenses, setExpenses] = useState(() => loadExpenses());
   const [settings, setSettings] = useState(() => loadSettings());
   
+  // Auth & Cloud Sync State
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
   // UI Modal States
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
@@ -31,7 +44,7 @@ export function App() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isPwaInstalled, setIsPwaInstalled] = useState(false);
 
-  // Sync expenses and settings to storage
+  // Sync expenses and settings to local storage as fallback/cache
   useEffect(() => {
     saveExpenses(expenses);
   }, [expenses]);
@@ -39,6 +52,78 @@ export function App() {
   useEffect(() => {
     saveSettings(settings);
   }, [settings]);
+
+  // Check Supabase Auth session on mount and listen to changes
+  useEffect(() => {
+    if (!supabase) return;
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const user = session?.user || null;
+      setCurrentUser(user);
+      if (user) {
+        fetchCloudExpenses(user.id).then(cloudExpenses => {
+          if (cloudExpenses && cloudExpenses.length > 0) {
+            setExpenses(cloudExpenses);
+          }
+        }).catch(err => console.warn('Cloud sync not yet initialized:', err.message));
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const user = session?.user || null;
+      setCurrentUser(user);
+      if (user) {
+        try {
+          const cloudExpenses = await fetchCloudExpenses(user.id);
+          if (cloudExpenses && cloudExpenses.length > 0) {
+            setExpenses(cloudExpenses);
+          }
+        } catch (err) {
+          console.warn('Failed to load cloud expenses:', err.message);
+        }
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
+  // Listen to Supabase Realtime channel for instant cross-device updates (phone <-> laptop)
+  useEffect(() => {
+    if (!supabase || !currentUser) return;
+
+    const channel = supabase
+      .channel(`realtime-expenses-${currentUser.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'expenses',
+          filter: `user_id=eq.${currentUser.id}`,
+        },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            const newExp = formatExpenseFromDB(payload.new);
+            setExpenses(prev => {
+              if (prev.some(e => e.id === newExp.id)) return prev;
+              return [newExp, ...prev];
+            });
+          } else if (payload.eventType === 'UPDATE') {
+            const updated = formatExpenseFromDB(payload.new);
+            setExpenses(prev => prev.map(e => e.id === updated.id ? updated : e));
+          } else if (payload.eventType === 'DELETE') {
+            setExpenses(prev => prev.filter(e => e.id !== payload.old.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [currentUser]);
 
   // Listen for PWA Install prompt and standalone display mode
   useEffect(() => {
@@ -68,7 +153,7 @@ export function App() {
     }
   };
 
-  // Expense Actions
+  // Expense Actions with Optimistic UI + Cloud Persistence
   const handleLogExpense = async (naturalLanguageText) => {
     const parsed = await parseExpensePrompt(
       naturalLanguageText, 
@@ -88,18 +173,39 @@ export function App() {
       timestamp: Date.now()
     };
 
+    // Optimistically update local state immediately
     setExpenses(prev => [newExpense, ...prev]);
+
+    // Push to Supabase if logged in
+    if (currentUser) {
+      insertCloudExpense(newExpense, currentUser.id).catch(err => {
+        console.error('Failed to sync new expense to cloud:', err);
+      });
+    }
+
     return newExpense;
   };
 
   const handleSaveEditedExpense = (updatedExpense) => {
     setExpenses(prev => prev.map(e => e.id === updatedExpense.id ? updatedExpense : e));
     setSelectedExpense(null);
+
+    if (currentUser) {
+      updateCloudExpense(updatedExpense, currentUser.id).catch(err => {
+        console.error('Failed to sync edited expense to cloud:', err);
+      });
+    }
   };
 
   const handleDeleteExpense = (id) => {
     setExpenses(prev => prev.filter(e => e.id !== id));
     setSelectedExpense(null);
+
+    if (currentUser) {
+      deleteCloudExpense(id, currentUser.id).catch(err => {
+        console.error('Failed to delete expense from cloud:', err);
+      });
+    }
   };
 
   // Filtered and Sorted Expenses
@@ -177,6 +283,8 @@ export function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenAnalytics={() => setIsAnalyticsOpen(true)}
         onOpenInstall={() => setIsInstallOpen(true)}
+        onOpenAuth={() => setIsAuthOpen(true)}
+        currentUser={currentUser}
         isPwaInstalled={isPwaInstalled}
         soundEnabled={settings.soundEnabled}
         hapticsEnabled={settings.hapticsEnabled}
@@ -271,6 +379,22 @@ export function App() {
         installPrompt={installPrompt}
         onTriggerInstall={handleTriggerInstall}
         soundEnabled={settings.soundEnabled}
+      />
+
+      {/* Cloud Authentication & Sync Modal */}
+      <AuthSyncModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        currentUser={currentUser}
+        expenses={expenses}
+        onSyncComplete={async () => {
+          if (currentUser) {
+            const fresh = await fetchCloudExpenses(currentUser.id);
+            if (fresh?.length) setExpenses(fresh);
+          }
+        }}
+        soundEnabled={settings.soundEnabled}
+        hapticsEnabled={settings.hapticsEnabled}
       />
 
     </div>

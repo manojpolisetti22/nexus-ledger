@@ -51,6 +51,41 @@ export function playCyberBeep(enabled = true) {
   }
 }
 
+export function playCashChime(enabled = true) {
+  if (!enabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(987.77, now); // B5
+    osc1.frequency.setValueAtTime(1318.51, now + 0.08); // E6
+
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(1975.53, now); // B6
+    osc2.frequency.setValueAtTime(2637.02, now + 0.08); // E7
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 0.3);
+    osc2.stop(now + 0.3);
+  } catch (err) {
+    console.debug('Cash chime failed', err);
+  }
+}
+
 export function playLaserClick(enabled = true) {
   if (!enabled) return;
   try {
