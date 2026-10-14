@@ -9,7 +9,7 @@
   }
 
   body {
-    background-color: #6b7280;
+    background-color: #22252a;
     color: #111827;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-tap-highlight-color: transparent;
@@ -39,13 +39,13 @@
   }
 }
 
-/* Dull Gray Base Canvas */
+/* Dark Gray Base Canvas */
 .nexus-sky-canvas {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100dvh;
-  background-color: #6b7280; /* Dull, muted gray backdrop */
+  background-color: #22252a; /* Dark gray closer to black backdrop */
   overflow: hidden;
   z-index: -10;
   pointer-events: none; /* Ensures background NEVER blocks clicks */
@@ -68,7 +68,7 @@
     rgba(254, 240, 138, 0.95) 0%,   /* Bright warm yellow core */
     rgba(251, 191, 36, 0.85) 30%,   /* Golden amber */
     rgba(249, 115, 22, 0.70) 60%,   /* Deep warm orange */
-    rgba(107, 114, 128, 0) 100%     /* Seamless fade into dull gray */
+    rgba(34, 37, 42, 0) 100%        /* Seamless fade into dark gray */
   );
   filter: blur(80px);
   -webkit-filter: blur(80px);
@@ -94,38 +94,38 @@
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(107, 114, 128, 0.15);
+  background: rgba(34, 37, 42, 0.3);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(17, 24, 39, 0.25);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(17, 24, 39, 0.45);
+  background: rgba(255, 255, 255, 0.45);
 }
 
 /* Clean Modern Glassmorphism System */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
 }
 
 .glass-panel-interactive {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.42);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.2);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-panel-interactive:hover {
-  background: rgba(255, 255, 255, 0.48);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.58);
+  border-color: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.3);
 }
 
 .glass-panel-interactive:active {
@@ -133,11 +133,11 @@
 }
 
 .glass-modal {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
 }
 
 /* Dynamic Sound Wave Bars for Voice Dictation */

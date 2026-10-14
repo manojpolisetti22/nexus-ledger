@@ -53,7 +53,7 @@ export function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/35 backdrop-blur-xl border-b border-white/40 px-4 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-3 shadow-sm">
+    <header className="sticky top-0 z-40 w-full bg-white/45 backdrop-blur-xl border-b border-white/40 px-4 pt-[calc(env(safe-area-inset-top,0px)+12px)] pb-3 shadow-sm">
       <div className="max-w-2xl mx-auto flex items-center justify-between">
         
         {/* Brand / Logo */}

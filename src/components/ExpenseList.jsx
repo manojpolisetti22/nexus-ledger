@@ -110,14 +110,14 @@ export function ExpenseList({
         <div className="flex items-center justify-between px-1 mb-2.5">
           <div className="flex items-center space-x-2">
             <span className="w-1.5 h-3 rounded-full bg-amber-500" />
-            <h3 className="text-xs uppercase tracking-wider text-gray-800 font-bold">
+            <h3 className="text-xs uppercase tracking-wider text-gray-100 font-bold">
               {title}
             </h3>
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/40 text-gray-800 border border-white/50">
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white/15 text-gray-200 border border-white/20">
               {count}
             </span>
           </div>
-          <span className="text-xs font-bold text-gray-900">
+          <span className="text-xs font-bold text-gray-100">
             {currency}{total.toFixed(2)}
           </span>
         </div>
@@ -132,7 +132,7 @@ export function ExpenseList({
               <div
                 key={exp.id}
                 onClick={() => handleItemClick(exp)}
-                className="bg-white/30 backdrop-blur-sm border border-white/35 rounded-2xl p-4 cursor-pointer relative overflow-hidden group hover:bg-white/45 transition-all duration-200 shadow-sm"
+                className="bg-white/45 backdrop-blur-md border border-white/50 rounded-2xl p-4 cursor-pointer relative overflow-hidden group hover:bg-white/60 transition-all duration-200 shadow-sm"
               >
                 {/* Subtle Left Category Accent Bar */}
                 <div 
@@ -197,8 +197,8 @@ export function ExpenseList({
 
   if (expenses.length === 0) {
     return (
-      <div className="my-10 bg-white/35 backdrop-blur-md border border-white/40 rounded-3xl p-8 text-center shadow-sm">
-        <div className="w-12 h-12 rounded-2xl bg-white/50 border border-white/60 flex items-center justify-center mx-auto mb-3 text-gray-800 shadow-sm">
+      <div className="my-10 bg-white/45 backdrop-blur-md border border-white/50 rounded-3xl p-8 text-center shadow-sm">
+        <div className="w-12 h-12 rounded-2xl bg-white/60 border border-white/60 flex items-center justify-center mx-auto mb-3 text-gray-900 shadow-sm">
           <Inbox className="w-6 h-6" />
         </div>
         <h3 className="text-sm font-bold uppercase text-gray-900 tracking-wider">
